@@ -1,0 +1,15 @@
+def versionFile = file('VERSION')
+if (versionFile.exists()) {
+    version = versionFile.text.trim()
+} else {
+    version = '5.0.0'  // fallback
+}
+description = "DoughminationAPI - A Library plugin for Clove's Plugins"
+
+dependencies {
+    // API has no additional dependencies beyond Paper API
+}
+
+shadowJar {
+    archiveBaseName.set('DoughminationAPI')
+}

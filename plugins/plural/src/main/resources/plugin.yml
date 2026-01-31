@@ -1,0 +1,28 @@
+# Copyright (c) 2026 Clove Twilight
+# Licensed under the ESAL-1.3 License
+
+name: Plural
+main: win.dougmination.plural.PluralMain
+version: 1.0.1
+api-version: 1.21.10
+author: Doughmination
+website: https://modding.doughmination.co.uk
+description: "This plugin is for people that are plural, to help proxy their messages"
+commands:
+  system:
+    description: "Manage your system"
+    usage: "/system <create|rename|remove> [name]"
+    permission: plural.system
+    aliases: [sys]
+  front:
+    description: "Manage your front"
+    usage: "/front <add|delete|set|clear> [name]"
+    permission: plural.front
+    aliases: [member, proxy, f, fr]
+permissions:
+  plural.system:
+    description: "Allows players to manage their system"
+    default: true
+  plural.front:
+    description: "Allows players to manage their front"
+    default: true
