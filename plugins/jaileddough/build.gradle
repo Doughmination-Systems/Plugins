@@ -1,0 +1,29 @@
+// JailedDough - Jail system plugin
+def versionFile = file('VERSION')
+if (versionFile.exists()) {
+    version = versionFile.text.trim()
+} else {
+    version = '5.0.0'  // fallback
+}
+description = "A jail plugin for Minecraft servers"
+
+dependencies {
+    // Depends on DoughminationAPI
+    compileOnly project(':doughminationapi')
+
+    // JSON parsing for update checker
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+// Fix: Explicitly declare the dependency on :doughminationapi:shadowJar
+tasks.named('compileJava') {
+    dependsOn ':doughminationapi:shadowJar'
+}
+
+shadowJar {
+    archiveBaseName.set('JailedDough')
+
+    dependencies {
+        include(dependency('com.googlecode.json-simple:json-simple'))
+    }
+}

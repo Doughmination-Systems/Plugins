@@ -1,0 +1,60 @@
+# Copyright (c) 2026 Clove Twilight
+# Licensed under the ESAL-1.3 Licence
+# WingSync - Discord Whitelist Sync Plugin
+
+# ========================================
+# DISCORD BOT CONFIGURATION
+# ========================================
+# To get your bot token:
+# 1. Go to https://discord.com/developers/applications
+# 2. Create a new application or select existing one
+# 3. Go to "Bot" section
+# 4. Click "Reset Token" or "Copy" to get your token
+# 5. Paste it below (keep the quotes!)
+#
+# After updating this file, use /wsreload in-game to connect the bot.
+# ========================================
+
+discord:
+  # Your Discord bot token - REQUIRED
+  # Replace YOUR_DISCORD_BOT_TOKEN with your actual token
+  token: "YOUR_DISCORD_BOT_TOKEN"
+
+  # Your Discord Guild (Server) ID - REQUIRED for ban syncing
+  # To get your guild ID: Enable Developer Mode in Discord settings,
+  # then right-click your server icon and click "Copy Server ID"
+  guild_id: "YOUR_DISCORD_GUILD_ID"
+
+  # Your Discord user ID (for admin permissions on /remove command)
+  # To get your ID: Enable Developer Mode in Discord settings,
+  # then right-click yourself and click "Copy User ID"
+  admin_id: "YOUR_DISCORD_ADMIN_ID"
+
+  # Would you like users that get banned in game to be banned from your server
+  # Set to false to disable Discord ban synchronization (default: true)
+  sync_bans: true
+
+# ========================================
+# DATABASE CONFIGURATION
+# ========================================
+# By default, WingSync uses file-based storage (playerdata.json)
+# Enable MySQL below if you want database storage instead.
+
+mysql:
+  enabled: false
+  host: localhost
+  port: 3306
+  database: minecraft
+  username: root
+  password: password123
+
+# ========================================
+# MESSAGES (Future use)
+# ========================================
+plugin:
+  messages:
+    enabled: "WingSync has been enabled!"
+    disabled: "WingSync has been disabled!"
+    whitelist_added: "Player {player} has been added to the whitelist by {user}."
+    whitelist_removed: "Player {player} has been removed from the whitelist by {user}."
+    no_permission: "You do not have permission to perform this action."
