@@ -14,11 +14,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import win.doughmination.api.LibMain;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class setBaseCommandExecutor implements CommandExecutor {
 
+    private static final long COOLDOWN_MILLIS = TimeUnit.MINUTES.toMillis(30);
     private final CordMain plugin;
+    private final Map<UUID, Long> cooldowns = new HashMap<>();
 
     public setBaseCommandExecutor(CordMain plugin) {
         this.plugin = plugin;
@@ -37,6 +42,25 @@ public class setBaseCommandExecutor implements CommandExecutor {
         }
 
         UUID playerUUID = player.getUniqueId();
+
+        // Cooldown check (bypass for ops)
+        if (!player.isOp()) {
+            long now = System.currentTimeMillis();
+            if (cooldowns.containsKey(playerUUID)) {
+                long elapsed = now - cooldowns.get(playerUUID);
+                if (elapsed < COOLDOWN_MILLIS) {
+                    long remaining = COOLDOWN_MILLIS - elapsed;
+                    long mins = TimeUnit.MILLISECONDS.toMinutes(remaining);
+                    long secs = TimeUnit.MILLISECONDS.toSeconds(remaining) % 60;
+                    player.sendMessage(ChatColor.RED + "You must wait " +
+                            ChatColor.YELLOW + mins + "m " + secs + "s" +
+                            ChatColor.RED + " before setting your base again.");
+                    return true;
+                }
+            }
+            cooldowns.put(playerUUID, now);
+        }
+
         Location location = player.getLocation();
 
         plugin.getBases().put(playerUUID, location);

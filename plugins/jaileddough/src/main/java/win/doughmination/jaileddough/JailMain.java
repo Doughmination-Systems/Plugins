@@ -34,12 +34,12 @@ public class JailMain extends JavaPlugin implements Listener {
             public void run() {
                 LibMain doughApi = LibMain.getInstance();
                 if (doughApi == null) {
-                    getLogger().severe("DoughminationAPI is still not initialized! Disabling JailPlugin.");
+                    getLogger().severe("DoughminationAPI is still not initialized! Disabling JailedDough.");
                     getServer().getPluginManager().disablePlugin(JailMain.this);
                     return;
                 }
 
-                getLogger().info("DoughminationAPI successfully accessed by JailPlugin.");
+                getLogger().info("DoughminationAPI successfully accessed by JailedDough.");
                 getLogger().info("DoughmimationAPI instance hash: " + System.identityHashCode(doughApi));
 
                 // Proceed with plugin initialization
@@ -48,7 +48,7 @@ public class JailMain extends JavaPlugin implements Listener {
                 startUnjailTask();
                 getServer().getPluginManager().registerEvents(JailMain.this, JailMain.this);
 
-                getLogger().info("JailPlugin has been enabled successfully!");
+                getLogger().info("JailedDough has been enabled successfully!");
             }
         }.runTaskLater(this, 1L);
     }
@@ -56,17 +56,17 @@ public class JailMain extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         saveLocations();
-        getLogger().info("JailPlugin has been disabled!");
+        getLogger().info("JailedDough has been disabled!");
     }
 
     @Override
     public void onLoad() {
-        getLogger().info("JailPlugin is loading...");
+        getLogger().info("JailedDough is loading...");
         LibMain doughApi = LibMain.getInstance();
         if (doughApi == null) {
-            getLogger().warning("DoughminationAPI instance is null during JailPlugin onLoad. This may resolve during onEnable.");
+            getLogger().warning("DoughminationAPI instance is null during JailedDough onLoad. This may resolve during onEnable.");
         } else {
-            getLogger().info("DoughminationAPI instance is accessible during JailPlugin onLoad.");
+            getLogger().info("DoughminationAPI instance is accessible during JailedDough onLoad.");
         }
     }
 
@@ -302,12 +302,12 @@ public class JailMain extends JavaPlugin implements Listener {
     private boolean handleReload(CommandSender sender) {
         reloadConfig();
         loadLocations();
-        sender.sendMessage(ChatColor.GREEN + "JailPlugin configuration reloaded!");
+        sender.sendMessage(ChatColor.GREEN + "JailedDough configuration reloaded!");
         return true;
     }
 
     private boolean handleHelp(CommandSender sender) {
-        sender.sendMessage(ChatColor.YELLOW + "JailPlugin Commands:");
+        sender.sendMessage(ChatColor.YELLOW + "JailedDough Commands:");
         sender.sendMessage(ChatColor.GREEN + "/setjail [x y z]" + ChatColor.WHITE + " - Set the jail location.");
         sender.sendMessage(ChatColor.GREEN + "/setunjail [x y z]" + ChatColor.WHITE + " - Set the unjail location.");
         sender.sendMessage(ChatColor.GREEN + "/jail <player> [time]" + ChatColor.WHITE + " - Jail a player. Optional time in seconds.");

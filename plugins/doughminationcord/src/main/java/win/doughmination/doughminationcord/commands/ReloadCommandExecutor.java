@@ -21,7 +21,7 @@ public class ReloadCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("estrocord.reload")) {
+        if (!sender.hasPermission("dough.reload")) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to reload the plugin!");
             return true;
         }

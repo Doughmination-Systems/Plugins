@@ -3,7 +3,7 @@
 
 name: Doughminationcord
 version: 5.0.0
-main: win.dougmination.doughminationcord.CordMain
+main: win.doughmination.doughminationcord.CordMain
 api-version: '1.21'
 depend: [DoughminationAPI]
 author: Doughmination
@@ -12,7 +12,7 @@ website: "https://modding.doughmination.co.uk"
 # Commands
 commands:
   # Ban commands
-  ecban:
+  doughban:
     description: Ban a player from the server
     usage: /ban <player> [reason]
     permission: dough.ban
@@ -42,29 +42,29 @@ commands:
   spawn:
     description: Teleport to the spawn location
   doughreload:
-    description: Reload the estrocord plugin configuration
+    description: Reload the doughminationcord plugin configuration
     usage: /doughreload
     permission: dough.reload
     permission-message: §cYou do not have permission to reload this plugin!
   tpask:
     description: Ask to tp to another player
     usage: /tpask <player>
-    permission: estrocord.tpask
+    permission: dough.tpask
     permission-message: §cYou don't have permission to use this command!
   tpaccept:
     description: Accept a tp request
     usage: /tpaccept
-    permission: estrocord.tpaccept
+    permission: dough.tpaccept
     permission-message: §cYou don't have permission to use this command!
   tpdeny:
     description: Deny a tp request
     usage: /tpdeny
-    permission: estrocord.tpdeny
+    permission: dough.tpdeny
     permission-message: §cYou don't have permission to use this command!
   playtime:
     description: Check your total playtime on the server.
     usage: /playtime
-    permission: estrocord.playtime
+    permission: dough.playtime
     permission-message: §cYou don't have permission to use this command!
   dough:
     description: Show help information for Doughminationcord commands
@@ -87,10 +87,15 @@ commands:
     usage: /kiss <player>
     permission: dough.kiss
     permission-message: §cYou don't have permission to use this command!
-  kitty:
-    description: Send a cute kitty message
-    usage: /kitty
-    permission: dough.kitty
+  meow:
+    description: Send a cute cat message
+    usage: /meow
+    permission: dough.meow
+    permission-message: §cYou don't have permission to use this command!
+  bark:
+    description: Send a cute dog message
+    usage: /bark
+    permission: dough.bark
     permission-message: §cYou don't have permission to use this command!
   veinminer:
     description: Toggle vein mining for ores or trees
@@ -106,6 +111,11 @@ commands:
     description: Remove a communal flight zone
     usage: /rmflyzone <name>
     permission: dough.flyzone
+  echest:
+    description: Remotely open your ender chest (VIP gets a larger separate chest)
+    usage: /echest
+    permission: dough.echest
+    permission-message: §cYou do not have permission to use this command!
   growthpotion:
     description: Gives you a growth potion
     usage: /growthpotion
@@ -138,8 +148,11 @@ permissions:
   dough.kiss:
     description: Allows players to use the kiss command.
     default: true
-  dough.kitty:
-    description: Allows players to use the kitty command.
+  dough.meow:
+    description: Allows players to use the meow command.
+    default: true
+  dough.bark:
+    description: Allows players to use the bark command.
     default: true
   dough.playtime:
     description: Allows players to check their playtime.
@@ -158,6 +171,12 @@ permissions:
     default: true
   dough.flyzone:
     description: Permission to manage communal fly zones
+    default: op
+  dough.echest:
+    description: Allows players to use /echest to open their ender chest remotely.
+    default: true
+  dough.echest.vip:
+    description: Allows VIP players to open a separate larger double chest via /echest.
     default: op
   dough.growthpotion:
     description: Gives a growth potion

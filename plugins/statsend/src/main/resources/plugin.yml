@@ -3,7 +3,7 @@
 
 name: StatsEnd
 version: ${project.version}
-main: win.dougmination.statsend.StatsMain
+main: win.doughmination.statsend.StatsMain
 api-version: 1.21
 author: CloveLib Studios
 description: ${project.description}

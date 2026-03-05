@@ -15,11 +15,11 @@ import win.doughmination.doughminationcord.CordMain;
 import java.util.List;
 import java.util.Random;
 
-public class kittyCommandExecutor implements CommandExecutor {
+public class meowCommandExecutor implements CommandExecutor {
     private final CordMain plugin;
     private final Random random;
 
-    public kittyCommandExecutor(CordMain plugin) {
+    public meowCommandExecutor(CordMain plugin) {
         this.plugin = plugin;
         this.random = new Random();
     }

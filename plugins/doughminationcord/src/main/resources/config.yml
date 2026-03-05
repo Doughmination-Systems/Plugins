@@ -7,8 +7,8 @@
 plugin-info:
   version: 5.0.0 # Your plugin version - Use to report issues
   authors:
-    - "CloveTwilight3"
-  official-repo: "https://modding.doughmination.co.uk"
+    - "Doughmination"
+  official-repo: "https://modding.doughmination.win"
 
 # ========================
 # Global Flight Settings
@@ -77,6 +77,20 @@ kitty-command:
     - ":3"
     - "rwar"
     - "X3"
+
+# ========================
+# Bark Command Messages
+# ========================
+bark-command:
+  messages: # Customize bark command responses
+    - "woof!"
+    - "arf!"
+    - "bork!"
+    - "awoo!"
+    - "*wags tail*"
+    - "ruff!"
+    - "*runs in circles*"
+    - "henlo fren!"
 
 # ========================
 # Permissions Settings

@@ -13,5 +13,5 @@ dependencies {
 }
 
 shadowJar {
-    archiveBaseName.set('CPC')
+    archiveBaseName.set('Plural')
 }

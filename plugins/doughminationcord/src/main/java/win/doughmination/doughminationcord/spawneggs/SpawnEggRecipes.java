@@ -57,9 +57,19 @@ public enum SpawnEggRecipes {
             {Material.SAND, Material.HORSE_SPAWN_EGG, Material.SAND},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
+    CAMEL_HUSK("camel_husk_spawn_egg", Material.CAMEL_HUSK_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.ROTTEN_FLESH, Material.CAMEL_SPAWN_EGG, Material.ROTTEN_FLESH},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
     CAT("cat_spawn_egg", Material.CAT_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.STRING, Material.MILK_BUCKET, Material.STRING},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
+    CREAKING("creaking_spawn_egg", Material.CREAKING_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.RESIN_CLUMP, Material.RESIN_BRICK, Material.RESIN_CLUMP},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
     CAVE_SPIDER("cave_spider_spawn_egg", Material.CAVE_SPIDER_SPAWN_EGG, new Material[][]{
@@ -80,6 +90,11 @@ public enum SpawnEggRecipes {
     COW("cow_spawn_egg", Material.COW_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.STRING, Material.LEATHER, Material.STRING},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
+    COPPER_GOLEM("copper_golem_spawn_egg",  Material.COPPER_GOLEM_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.COPPER_INGOT, Material.CARVED_PUMPKIN, Material.COPPER_INGOT},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
     CREEPER("creeper_spawn_egg", Material.CREEPER_SPAWN_EGG, new Material[][]{
@@ -142,6 +157,11 @@ public enum SpawnEggRecipes {
             {Material.STRING, Material.GHAST_TEAR, Material.STRING},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
+    HAPPY_GHAST("happy_ghast_spawn_egg", Material.HAPPY_GHAST_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.WATER_BUCKET, Material.DRIED_GHAST, Material.WATER_BUCKET},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
     GLOW_SQUID("glow_squid_spawn_egg", Material.GLOW_SQUID_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.STRING, Material.GLOW_INK_SAC, Material.STRING},
@@ -197,6 +217,11 @@ public enum SpawnEggRecipes {
             {Material.STRING, Material.WHEAT, Material.STRING},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
+    NAUTILUS("nautilus_spawn_egg", Material.NAUTILUS_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.PUFFERFISH, Material.COD_SPAWN_EGG, Material.PUFFERFISH},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
     OCELOT("ocelot_spawn_egg", Material.OCELOT_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.STRING, Material.ORANGE_DYE, Material.STRING},
@@ -205,6 +230,11 @@ public enum SpawnEggRecipes {
     PANDA("panda_spawn_egg", Material.PANDA_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.STRING, Material.BAMBOO, Material.STRING},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
+    PARCHED("parched_spawn_egg", Material.PARCHED_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.SAND, Material.SKELETON_SPAWN_EGG, Material.SAND},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
     PARROT("parrot_spawn_egg", Material.PARROT_SPAWN_EGG, new Material[][]{
@@ -314,7 +344,7 @@ public enum SpawnEggRecipes {
     }),
     STRAY("stray_spawn_egg", Material.STRAY_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
-            {Material.SAND, Material.SKELETON_SPAWN_EGG, Material.SAND},
+            {Material.BUCKET, Material.SKELETON_SPAWN_EGG, Material.BUCKET},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
     STRIDER("strider_spawn_egg", Material.STRIDER_SPAWN_EGG, new Material[][]{
@@ -400,6 +430,11 @@ public enum SpawnEggRecipes {
     ZOMBIE_HORSE("zombie_horse_spawn_egg", Material.ZOMBIE_HORSE_SPAWN_EGG, new Material[][]{
             {Material.STRING, Material.STRING, Material.STRING},
             {Material.ROTTEN_FLESH, Material.HORSE_SPAWN_EGG, Material.ROTTEN_FLESH},
+            {Material.STRING, Material.STRING, Material.STRING}
+    }),
+    ZOMBIE_NAUTILUS("zombie_nautilus_spawn_egg", Material.ZOMBIE_NAUTILUS_SPAWN_EGG, new Material[][]{
+            {Material.STRING, Material.STRING, Material.STRING},
+            {Material.ROTTEN_FLESH, Material.NAUTILUS_SPAWN_EGG, Material.ROTTEN_FLESH},
             {Material.STRING, Material.STRING, Material.STRING}
     }),
     ZOMBIFIED_PIGLIN("zombified_piglin_spawn_egg", Material.ZOMBIFIED_PIGLIN_SPAWN_EGG, new Material[][]{

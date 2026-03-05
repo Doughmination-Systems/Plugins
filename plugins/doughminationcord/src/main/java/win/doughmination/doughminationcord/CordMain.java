@@ -55,8 +55,6 @@ public class CordMain extends JavaPlugin {
         // Flight
         BaseFlightMain baseFlightMain = new BaseFlightMain(this);
         baseFlightMain.onEnable();
-        getServer().getPluginManager().registerEvents(new FlightListener(baseFlightMain, this), this);
-        new FlightCheckTask(baseFlightMain, this).runTaskTimer(this, 20L, 20L);
 
         // Veinminer
         veinminerCommandExecutor veinMinerExecutor = new veinminerCommandExecutor(this);
@@ -90,7 +88,8 @@ public class CordMain extends JavaPlugin {
         getCommand("setbase").setExecutor(new setBaseCommandExecutor(this));
         getCommand("visitbase").setExecutor(new visitBaseCommandExecutor(this));
         getCommand("base").setExecutor(new baseCommandExecutor(this));
-        getCommand("kitty").setExecutor(new kittyCommandExecutor(this));
+        getCommand("meow").setExecutor(new meowCommandExecutor(this));
+        getCommand("bark").setExecutor(new barkCommandExecutor(this));
         getCommand("kiss").setExecutor(new kissCommandExecutor(this));
         getCommand("playtime").setExecutor(new playtimeCommandExecutor(this));
         getCommand("veinminer").setExecutor(new veinminerCommandExecutor(this));
@@ -99,14 +98,15 @@ public class CordMain extends JavaPlugin {
         getCommand("dough").setExecutor(new DoughCommandExecutor(this));
         getCommand("version").setExecutor(new VersionCommandExecutor(this));
         getCommand("doughreload").setExecutor(new ReloadCommandExecutor(this));
+        getCommand("echest").setExecutor(new EChestCommandExecutor(this));
         getCommand("recipes").setExecutor(new RecipesCommandExecutor(this));
         getCommand("growthpotion").setExecutor(new GrowthShrinkPotionCommand(this));
         getCommand("shrinkpotion").setExecutor(new GrowthShrinkPotionCommand(this));
 
-        // Ban commands (via CloveLib)
+        // Ban commands (via DoughminationAPI)
         BanCommandExecutor banExecutor = new BanCommandExecutor(this);
-        getCommand("ecban").setExecutor(banExecutor);
-        getCommand("ecban").setTabCompleter(banExecutor);
+        getCommand("doughban").setExecutor(banExecutor);
+        getCommand("doughban").setTabCompleter(banExecutor);
 
         UnbanCommandExecutor unbanExecutor = new UnbanCommandExecutor(this);
         getCommand("unban").setExecutor(unbanExecutor);
@@ -129,8 +129,8 @@ public class CordMain extends JavaPlugin {
 
     // Add and retrieve jailed status for players
     public boolean isPlayerJailed(Player player) {
-        LibMain cloveLib = LibMain.getInstance();
-        return cloveLib != null && cloveLib.isPlayerJailed(player.getUniqueId());
+        LibMain doughAPI = LibMain.getInstance();
+        return doughAPI != null && doughAPI.isPlayerJailed(player.getUniqueId());
     }
 
     public Location getBaseLocation(UUID playerUUID) {

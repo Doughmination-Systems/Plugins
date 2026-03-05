@@ -64,10 +64,10 @@ public class veinminerCommandExecutor implements CommandExecutor {
     }
 
     public boolean isOreVeinMinerEnabled(UUID playerUUID) {
-        return oreVeinMinerEnabled.getOrDefault(playerUUID, false);
+        return oreVeinMinerEnabled.getOrDefault(playerUUID, true);
     }
 
     public boolean isTreeVeinMinerEnabled(UUID playerUUID) {
-        return treeVeinMinerEnabled.getOrDefault(playerUUID, false);
+        return treeVeinMinerEnabled.getOrDefault(playerUUID, true);
     }
 }
