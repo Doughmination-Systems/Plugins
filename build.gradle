@@ -32,6 +32,8 @@ subprojects {
 
     dependencies {
         compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
+        implementation 'org.bstats:bstats-bukkit:3.2.1'
+        implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     }
 
     compileJava {
@@ -40,6 +42,13 @@ subprojects {
 
     shadowJar {
         archiveClassifier.set('')
+        relocate 'org.bstats', 'win.dougmination.libs.bstats'
+        relocate 'org.json.simple', 'win.dougmination.libs.json'
+        dependencies {
+            include(dependency('org.bstats:bstats-bukkit'))
+            include(dependency('org.bstats:bstats-base'))
+            include(dependency('com.googlecode.json-simple:json-simple'))
+        }
     }
 
     tasks.build {

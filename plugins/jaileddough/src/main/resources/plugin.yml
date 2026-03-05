@@ -2,12 +2,13 @@
 # Licensed under the ESAL-1.3 License
 
 name: JailedDough
-version: 1.7
+version: 5.0.0
 main: win.doughmination.jaileddough.JailMain
-author: CloveLib Studios
-api-version: '1.21'
+author: Doughmination
+website: https://modding.doughmination.win
+api-version: 1.21.11
 description: A simple jail plugin for Minecraft.
-depend: [DoughminationAPI]
+depend: [DoughAPI]
 commands:
   setjail:
     description: Set the jail location

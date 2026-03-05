@@ -1,20 +1,24 @@
 package win.dougmination.plural;
 
+// Bukkit
 import org.bukkit.plugin.java.JavaPlugin;
-import win.dougmination.plural.commands.SystemCommand;
-import win.dougmination.plural.commands.FrontCommand;
-import win.dougmination.plural.listeners.ChatProxyListener;
-import win.dougmination.plural.commands.SystemCommandTabCompleter;
-import win.dougmination.plural.commands.FrontCommandTabCompleter;
 
+// Internal
+import win.dougmination.plural.commands.*;
+import win.dougmination.plural.listeners.*;
+
+// Java
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+// Google
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.bstats.bukkit.Metrics;
 
 public class PluralMain extends JavaPlugin {
     public static final String MOD_NAME = "Plural";
@@ -25,10 +29,13 @@ public class PluralMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        int pluginId = 29923; // Replace with your actual plugin id
+        Metrics metrics = new Metrics(this, pluginId);
+
         getLogger().info("[Plural] " + MOD_NAME + " Loaded!");
         loadAllSystems();
 
-        // SkinManager.initialize();
 
         instance = this;
 

@@ -3,10 +3,10 @@
 
 name: Plural
 main: win.dougmination.plural.PluralMain
-version: 1.0.1
-api-version: 1.21.10
+version: 5.0.0
+api-version: 1.21.11
 author: Doughmination
-website: https://modding.doughmination.co.uk
+website: https://modding.doughmination.win
 description: "This plugin is for people that are plural, to help proxy their messages"
 commands:
   system:

@@ -1,0 +1,9 @@
+description = "Dough End Stats plugin - Dragon event tracking"
+
+dependencies {
+    // None needed
+}
+
+shadowJar {
+    archiveBaseName.set('DoughEndStats')
+}

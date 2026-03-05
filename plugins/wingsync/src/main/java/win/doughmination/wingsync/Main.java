@@ -6,12 +6,15 @@
 
 package win.doughmination.wingsync;
 
-import net.dv8tion.jda.api.entities.UserSnowflake;
+
+// Bukkkit
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+// dv8
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,9 +24,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import win.doughmination.wingsync.listeners.ApiListener;
-import win.doughmination.wingsync.listeners.BanListener;
+import net.dv8tion.jda.api.entities.UserSnowflake;
 
+// Internal
+import win.doughmination.wingsync.listeners.*;
+
+// Java
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.sql.Connection;
@@ -39,9 +45,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.reflect.Type;
+
+// Google
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+
+// BStats
+import org.bstats.bukkit.Metrics;;
+
 
 public class Main extends JavaPlugin {
 
@@ -72,6 +84,11 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        // Enable BStats
+        int pluginId = 29922; // Replace with your actual plugin id
+        Metrics metrics = new Metrics(this, pluginId);
+
         saveDefaultConfig();
 
         // Check if MySQL is enabled

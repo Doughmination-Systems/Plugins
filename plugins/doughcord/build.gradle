@@ -1,4 +1,4 @@
-description = "A jail plugin for Minecraft servers"
+description = "Doughcord Plugin - Feature-rich Minecraft plugin"
 
 dependencies {
     compileOnly project(':doughapi')
@@ -9,5 +9,5 @@ tasks.named('compileJava') {
 }
 
 shadowJar {
-    archiveBaseName.set('JailedDough')
+    archiveBaseName.set('Doughcord')
 }

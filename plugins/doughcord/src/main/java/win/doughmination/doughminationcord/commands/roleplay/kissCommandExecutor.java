@@ -1,0 +1,79 @@
+/*
+ * Copyright (c) 2026 Clove Twilight
+ * Licensed under the ESAL-1.3 Licence
+ */
+
+package win.doughmination.doughminationcord.commands.roleplay;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import win.doughmination.doughminationcord.CordMain;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class kissCommandExecutor implements CommandExecutor, TabCompleter {
+    private final CordMain plugin;
+
+    public kissCommandExecutor(CordMain plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!(sender instanceof Player senderPlayer)) {
+            sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+            return true;
+        }
+
+        if (args.length != 1) {
+            senderPlayer.sendMessage(ChatColor.AQUA + "Usage: /kiss <player>");
+            return true;
+        }
+
+        Player targetPlayer = plugin.getServer().getPlayer(args[0]);
+        if (targetPlayer == null) {
+            senderPlayer.sendMessage(ChatColor.RED + "Player not found!");
+            return true;
+        }
+
+        if (senderPlayer.equals(targetPlayer)) {
+            senderPlayer.sendMessage(ChatColor.RED + "You can't kiss yourself!");
+            return true;
+        }
+
+        // Broadcast the kiss message
+        plugin.getServer().broadcastMessage(
+                ChatColor.LIGHT_PURPLE + senderPlayer.getName() +
+                        ChatColor.WHITE + " kisses " +
+                        ChatColor.LIGHT_PURPLE + targetPlayer.getName() +
+                        ChatColor.WHITE + "!"
+        );
+
+        // Play level up sound for the sender
+        senderPlayer.playSound(senderPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> completions = new ArrayList<>();
+
+        if (args.length == 1) {
+            String partialName = args[0].toLowerCase();
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                if (player.getName().toLowerCase().startsWith(partialName)) {
+                    completions.add(player.getName());
+                }
+            }
+        }
+
+        return completions;
+    }
+}

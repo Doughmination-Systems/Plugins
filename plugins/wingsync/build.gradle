@@ -1,33 +1,18 @@
-// WingSync - Discord whitelist sync plugin
-// Read version from VERSION file
-def versionFile = file('VERSION')
-if (versionFile.exists()) {
-    version = versionFile.text.trim()
-} else {
-    version = '5.0.0'  // fallback
-}
 description = "Discord bot integration for whitelist management"
 
 dependencies {
-    // Depends on DoughminationAPI
-    compileOnly project(':doughminationapi')
-
-    // JDA for Discord bot (will pull in all transitive dependencies)
+    compileOnly project(':doughapi')
     implementation 'net.dv8tion:JDA:6.3.1'
-
-    // Gson for JSON storage
     implementation 'com.google.code.gson:gson:2.13.2'
 }
 
-// Fix: Explicitly declare the dependency on doughmination-api:shadowJar
 tasks.named('compileJava') {
-    dependsOn ':doughminationapi:shadowJar'
+    dependsOn ':doughapi:shadowJar'
 }
 
 shadowJar {
     archiveBaseName.set('WingSync')
 
-    // Relocate JDA and its dependencies to avoid conflicts
     relocate 'net.dv8tion', 'win.dougmination.libs.jda'
     relocate 'com.neovisionaries', 'win.dougmination.libs.neovisionaries'
     relocate 'okhttp3', 'win.dougmination.libs.okhttp3'
@@ -40,13 +25,10 @@ shadowJar {
     relocate 'org.intellij', 'win.dougmination.libs.intellij'
     relocate 'org.slf4j', 'win.dougmination.libs.slf4j'
 
-    // Merge service files (important for OkHttp/Okio)
     mergeServiceFiles()
 
-    // Include ALL runtime dependencies (this is the key change)
     configurations = [project.configurations.runtimeClasspath]
 
-    // Exclude unnecessary files to reduce JAR size
     exclude 'META-INF/*.SF'
     exclude 'META-INF/*.DSA'
     exclude 'META-INF/*.RSA'

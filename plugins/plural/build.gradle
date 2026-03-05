@@ -1,15 +1,7 @@
-// Clove's PluralCraft - Plural system support plugin
-def versionFile = file('VERSION')
-if (versionFile.exists()) {
-    version = versionFile.text.trim()
-} else {
-    version = '5.0.0'  // fallback
-}
 description = "Plugin for plural systems to proxy their messages"
 
 dependencies {
-    // SkinsRestorer API (optional, commented out in source)
-    // compileOnly 'net.skinsrestorer:skinsrestorer-api:15.0.0'
+    // None needed
 }
 
 shadowJar {
