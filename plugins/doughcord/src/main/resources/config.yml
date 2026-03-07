@@ -2,7 +2,7 @@
 # Licensed under the ESAL-1.3 License
 
 # =======================
-# Estrocord Plugin Config - DO NOT CHANGE! THIS WILL BREAK THE PLUGIN!
+# Plugin Config - DO NOT CHANGE! THIS WILL BREAK THE PLUGIN!
 # =======================
 plugin-info:
   version: 5.0.0 # Your plugin version - Use to report issues

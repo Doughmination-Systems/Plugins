@@ -1,100 +1,106 @@
 package win.dougmination.plural;
 
-// Bukkit
 import org.bukkit.plugin.java.JavaPlugin;
-
-// Internal
 import win.dougmination.plural.commands.*;
 import win.dougmination.plural.listeners.*;
+import win.dougmination.plural.api.CloudApiClient;
 
-// Java
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-// Google
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.bstats.bukkit.Metrics;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PluralMain extends JavaPlugin {
+
     public static final String MOD_NAME = "Plural";
-    private static final Path CONFIG_DIR = Path.of("plugins/Plural");
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final Map<UUID, SystemData> systemDataMap = new HashMap<>();
+    public static final Map<UUID, PlayerSystemData> systemCache = new ConcurrentHashMap<>();
     private static PluralMain instance;
+    private static CloudApiClient apiClient;
 
     @Override
     public void onEnable() {
-
-        int pluginId = 29923; // Replace with your actual plugin id
-        Metrics metrics = new Metrics(this, pluginId);
-
-        getLogger().info("[Plural] " + MOD_NAME + " Loaded!");
-        loadAllSystems();
-
-
+        saveDefaultConfig();
         instance = this;
 
-        getCommand("system").setExecutor(new SystemCommand());
-        getCommand("system").setTabCompleter(new SystemCommandTabCompleter());
+        String apiUrl = getConfig().getString("api_url", "");
 
-        getCommand("front").setExecutor(new FrontCommand());
-        getCommand("front").setTabCompleter(new FrontCommandTabCompleter());
+        if (apiUrl.isEmpty()) {
+            getLogger().warning("[Plural] api_url not set in config.yml — cloud sync disabled.");
+            apiClient = null;
+        } else {
+            apiClient = new CloudApiClient(apiUrl);
+            getLogger().info("[Plural] Cloud API connected: " + apiUrl);
+        }
+
+        getCommand("plural").setExecutor(new PluralCommand());
+        getCommand("plural").setTabCompleter(new PluralCommandTabCompleter());
 
         getServer().getPluginManager().registerEvents(new ChatProxyListener(), this);
-    }
+        getServer().getPluginManager().registerEvents(new PlayerConnectionListener(), this);
 
-    public static PluralMain getInstance() {
-        return instance;
+        getLogger().info("[Plural] " + MOD_NAME + " loaded!");
     }
 
     @Override
     public void onDisable() {
-        saveAllSystems();
+        systemCache.clear();
     }
 
-    public static void loadAllSystems() {
-        try {
-            Files.createDirectories(CONFIG_DIR);
-            Files.list(CONFIG_DIR).forEach(path -> {
-                try {
-                    UUID uuid = UUID.fromString(path.getFileName().toString().replace(".json", ""));
-                    SystemData data = GSON.fromJson(Files.readString(path), SystemData.class);
-                    systemDataMap.put(uuid, data);
-                } catch (Exception e) {
-                    System.err.println("Failed to load system file: " + path);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public static PluralMain getInstance() { return instance; }
+    public static CloudApiClient getApiClient() { return apiClient; }
 
-    public static void saveAllSystems() {
-        systemDataMap.forEach((uuid, system) -> saveSystem(uuid));
-    }
+    // ---- In-memory data model ----
 
-    public static void saveSystem(UUID uuid) {
-        try {
-            Path filePath = CONFIG_DIR.resolve(uuid.toString() + ".json");
-            Files.writeString(filePath, GSON.toJson(systemDataMap.get(uuid)));
-        } catch (Exception e) {
-            System.err.println("Failed to save system file: " + uuid);
-        }
-    }
-
-    public static class SystemData {
+    public static class PlayerSystemData {
+        public final UUID minecraftUuid;
         public String systemName;
-        public Map<String, Boolean> fronts = new HashMap<>();
-        public String activeFront = "";
-        public Map<String, String> frontSkins = new HashMap<>(); // Stores front -> skin URL or username
+        public String systemTag;
+        // memberName (lowercased key) -> MemberInfo
+        public final Map<String, MemberInfo> members = new LinkedHashMap<>();
+        // Names of currently fronting members (support multi-word, co-fronting)
+        public final List<String> activeFrontNames = new ArrayList<>();
 
-        public SystemData(String systemName) {
+        public PlayerSystemData(UUID minecraftUuid, String systemName) {
+            this.minecraftUuid = minecraftUuid;
             this.systemName = systemName;
         }
+
+        /** Returns true if this UUID has a registered cloud system */
+        public boolean hasSystem() { return systemName != null && !systemName.isEmpty(); }
+
+        /** Case-insensitive member lookup */
+        public MemberInfo getMember(String name) {
+            return members.get(name.toLowerCase());
+        }
+
+        /** Returns the chat display prefix for the current front, or null if not fronting */
+        public String buildChatPrefix() {
+            if (activeFrontNames.isEmpty()) return null;
+            StringBuilder sb = new StringBuilder();
+            sb.append("§7<");
+            for (int i = 0; i < activeFrontNames.size(); i++) {
+                if (i > 0) sb.append("§7 & ");
+                String name = activeFrontNames.get(i);
+                MemberInfo info = getMember(name);
+                if (info != null && info.color != null && !info.color.isEmpty()) {
+                    // Convert hex color to nearest Bukkit ChatColor approximation,
+                    // or use the raw hex via Adventure API if available
+                    sb.append("§f"); // fallback white; Adventure/MiniMessage handles true color
+                } else {
+                    sb.append("§f");
+                }
+                sb.append(info != null && info.displayName != null ? info.displayName : name);
+            }
+            sb.append("§7 (§b").append(systemName).append("§7)>§r ");
+            return sb.toString();
+        }
+    }
+
+    public static class MemberInfo {
+        public String name;         // canonical name (may contain spaces)
+        public String displayName;
+        public String pronouns;
+        public String color;        // hex without #
+        public String avatarUrl;
+        public String description;
+        public String pkMemberId;
     }
 }

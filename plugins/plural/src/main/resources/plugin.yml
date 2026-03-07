@@ -3,26 +3,21 @@
 
 name: Plural
 main: win.dougmination.plural.PluralMain
-version: 5.0.0
+version: 5.1.0
 api-version: 1.21.11
 author: Doughmination
 website: https://modding.doughmination.win
-description: "This plugin is for people that are plural, to help proxy their messages"
+description: "Cloud-backed plural system proxy for Plural Cloud."
+softdepend: [LuckPerms]
+
 commands:
-  system:
-    description: "Manage your system"
-    usage: "/system <create|rename|remove> [name]"
-    permission: plural.system
-    aliases: [sys]
-  front:
-    description: "Manage your front"
-    usage: "/front <add|delete|set|clear> [name]"
-    permission: plural.front
-    aliases: [member, proxy, f, fr]
+  plural:
+    description: "Plural Cloud commands"
+    usage: "/plural <system|help>"
+    permission: plural.use
+    aliases: [pl]
+
 permissions:
-  plural.system:
-    description: "Allows players to manage their system"
-    default: true
-  plural.front:
-    description: "Allows players to manage their front"
+  plural.use:
+    description: "Use Plural Cloud commands"
     default: true

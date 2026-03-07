@@ -1,7 +1,12 @@
-description = "Plugin for plural systems to proxy their messages"
+description = "Plugin for plural systems - cloud-backed via Plural Cloud"
+
+repositories {
+    maven { url 'https://repo.lucko.me/' }
+}
 
 dependencies {
-    // None needed
+    // LuckPerms API — optional, compile-only (not bundled)
+    compileOnly 'net.luckperms:api:5.4'
 }
 
 shadowJar {

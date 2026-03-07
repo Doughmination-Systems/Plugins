@@ -1,1 +1,8 @@
-# Plural Configuration File
+# Plural Cloud Plugin Configuration
+
+# The public URL of your Plural Cloud API server (no trailing slash)
+api_url: "https://plural.doughmination.win"
+
+# Hook into LuckPerms to include rank prefix/suffix in plural chat format
+# Requires LuckPerms to be installed — safe to leave true even if not installed
+luckperms_prefix: true

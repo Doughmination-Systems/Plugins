@@ -3,7 +3,7 @@
 
 name: Doughcord
 version: 5.0.0
-main: win.doughmination.doughminationcord.CordMain
+main: win.doughmination.doughcord.CordMain
 api-version: 1.21.11
 depend: [DoughAPI]
 author: Doughmination
