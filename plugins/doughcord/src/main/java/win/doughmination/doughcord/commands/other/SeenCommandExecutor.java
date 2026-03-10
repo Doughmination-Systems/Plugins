@@ -73,7 +73,7 @@ public class SeenCommandExecutor implements CommandExecutor, TabCompleter {
 
         if (lastSeen <= 0) {
             // Fall back to Bukkit's own last-played timestamp if we have no record yet
-            lastSeen = offlinePlayer.getLastPlayed();
+            lastSeen = offlinePlayer.getLastLogin();
         }
 
         if (lastSeen <= 0) {

@@ -32,7 +32,9 @@ public class CraftCommandExecutor implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        player.openWorkbench(null, true);
+        // openWorkbench is deprecated in Paper 1.21 but has no stable replacement yet
+        @SuppressWarnings("deprecation")
+        boolean ignored = player.openWorkbench(null, true) != null;
         return true;
     }
 
