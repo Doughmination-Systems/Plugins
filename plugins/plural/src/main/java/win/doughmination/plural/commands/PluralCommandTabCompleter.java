@@ -1,4 +1,4 @@
-package win.dougmination.plural.commands;
+package win.doughmination.plural.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

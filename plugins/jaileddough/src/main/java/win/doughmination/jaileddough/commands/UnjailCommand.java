@@ -5,7 +5,6 @@
 
 package win.doughmination.jaileddough.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -27,13 +26,13 @@ public class UnjailCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length != 1) {
-            sender.sendMessage(ChatColor.RED + "Usage: /unjail <player>");
+            sender.sendRichMessage("<red>Usage: /unjail <player></red>");
             return true;
         }
 
         Player target = plugin.getServer().getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player not found!");
+            sender.sendRichMessage("<red>Player not found!</red>");
             return true;
         }
 
@@ -41,7 +40,7 @@ public class UnjailCommand implements CommandExecutor {
         Location returnLoc = plugin.getLocationStorage().get(id);
 
         if (returnLoc == null) {
-            sender.sendMessage(ChatColor.RED + target.getName() + " has no saved pre-jail location!");
+            sender.sendRichMessage("<red>" + target.getName() + " has no saved pre-jail location!</red>");
             return true;
         }
 
@@ -49,8 +48,8 @@ public class UnjailCommand implements CommandExecutor {
         plugin.getLocationStorage().remove(id);
         plugin.getTimerStorage().remove(id);
 
-        target.sendMessage(ChatColor.GREEN + "You have been released from jail!");
-        sender.sendMessage(ChatColor.GREEN + "Player " + target.getName() + " has been released from jail!");
+        target.sendRichMessage("<green>You have been released from jail!</green>");
+        sender.sendRichMessage("<green>Player " + target.getName() + " has been released from jail!</green>");
 
         LibMain doughApi = LibMain.getInstance();
         if (doughApi != null) {

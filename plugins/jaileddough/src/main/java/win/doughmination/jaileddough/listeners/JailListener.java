@@ -5,9 +5,6 @@
 
 package win.doughmination.jaileddough.listeners;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,7 +22,7 @@ public class JailListener implements Listener {
         if (doughApi == null) return;
 
         if (doughApi.isPlayerJailed(attacker.getUniqueId())) {
-            attacker.sendMessage(Component.text("You cannot attack other players whiled jailed!", NamedTextColor.RED));
+            attacker.sendRichMessage("<red>You cannot attack other players whiled jailed!</red>");
             event.setCancelled(true);
         }
     }

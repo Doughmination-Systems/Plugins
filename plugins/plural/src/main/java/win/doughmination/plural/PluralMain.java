@@ -1,9 +1,13 @@
-package win.dougmination.plural;
+package win.doughmination.plural;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import win.dougmination.plural.commands.*;
-import win.dougmination.plural.listeners.*;
-import win.dougmination.plural.api.CloudApiClient;
+import win.doughmination.plural.commands.PluralCommand;
+import win.doughmination.plural.commands.PluralCommandTabCompleter;
+import win.doughmination.plural.listeners.ChatProxyListener;
+import win.doughmination.plural.listeners.PlayerConnectionListener;
+import win.doughmination.plural.commands.*;
+import win.doughmination.plural.listeners.*;
+import win.doughmination.plural.api.CloudApiClient;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -92,8 +96,6 @@ public class PluralMain extends JavaPlugin {
                 String name = activeFrontNames.get(i);
                 MemberInfo info = getMember(name);
                 if (info != null && info.color != null && !info.color.isEmpty()) {
-                    // Convert hex color to nearest Bukkit ChatColor approximation,
-                    // or use the raw hex via Adventure API if available
                     sb.append("§f"); // fallback white; Adventure/MiniMessage handles true color
                 } else {
                     sb.append("§f");

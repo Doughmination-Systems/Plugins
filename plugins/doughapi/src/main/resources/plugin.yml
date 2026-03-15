@@ -3,7 +3,7 @@
 
 name: DoughAPI
 main: win.doughmination.api.LibMain
-version: 5.0.0
+version: 5.1.0
 api-version: 1.21.11
 description: Shared library for Doughmination Plugins
 author: Doughmination

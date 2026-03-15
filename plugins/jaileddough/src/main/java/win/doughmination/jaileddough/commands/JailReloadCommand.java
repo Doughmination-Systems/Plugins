@@ -5,7 +5,6 @@
 
 package win.doughmination.jaileddough.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,7 +24,7 @@ public class JailReloadCommand implements CommandExecutor {
         plugin.loadJailLocation();
         plugin.getLocationStorage().load();
         plugin.getTimerStorage().load();
-        sender.sendMessage(ChatColor.GREEN + "JailedDough configuration reloaded!");
+        sender.sendRichMessage("<green>JailedDough configuration reloaded!</green>");
         return true;
     }
 }

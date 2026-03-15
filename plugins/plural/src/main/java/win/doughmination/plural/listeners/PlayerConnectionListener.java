@@ -1,9 +1,7 @@
-package win.dougmination.plural.listeners;
+package win.doughmination.plural.listeners;
 
-import org.bukkit.Bukkit;
-import win.dougmination.plural.PluralMain;
+import win.doughmination.plural.PluralMain;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.event.EventHandler;
@@ -20,7 +18,7 @@ public class PlayerConnectionListener implements Listener {
 
     private static final long POLL_INTERVAL_TICKS = 20L * 30;
 
-    // Store tasks so we can't cancel them lol
+    // Store tasks so we can cancel them
     private final Map<UUID, BukkitTask> pollingTasks = new ConcurrentHashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -87,18 +85,16 @@ public class PlayerConnectionListener implements Listener {
                                     PluralMain.systemCache.put(uuid, data);
 
                                     if (announceOnJoin && !data.activeFrontNames.isEmpty()) {
-                                        player.sendMessage(ChatColor.GRAY + "[Plural] Fronting as: "
-                                                + ChatColor.WHITE +
-                                                String.join( " & ", data.activeFrontNames));
+                                        player.sendRichMessage("<gray>[Plural] Fronting as: <white>"
+                                                + String.join(" & ", data.activeFrontNames));
                                     }
 
                                     if (!announceOnJoin
                                             && prev != null
                                             && !prev.activeFrontNames.equals(data.activeFrontNames)
                                             && !data.activeFrontNames.isEmpty()) {
-                                        player.sendMessage(ChatColor.GRAY + "[Plural] Front updated: "
-                                                + ChatColor.WHITE +
-                                                String.join(" & ", data.activeFrontNames));
+                                        player.sendRichMessage("<gray>[Plural] Front updated: <white>"
+                                                + String.join(" & ", data.activeFrontNames));
                                     }
                                 } else {
                                     PluralMain.systemCache.remove(uuid);
@@ -106,5 +102,4 @@ public class PlayerConnectionListener implements Listener {
                             });
                 });
     }
-
 }

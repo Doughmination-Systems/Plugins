@@ -1,24 +1,29 @@
-package win.dougmination.plural.listeners;
+package win.doughmination.plural.listeners;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import win.dougmination.plural.PluralMain;
+import win.doughmination.plural.PluralMain;
 
 import java.util.UUID;
 
 public class ChatProxyListener implements Listener {
 
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
+
     // Listen at MONITOR so we run AFTER LuckPerms (which runs at HIGHEST)
-    // We then override the format if the player has an active front
+    // We then override the renderer if the player has an active front
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
+    public void onPlayerChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
 
@@ -52,15 +57,17 @@ public class ChatProxyListener implements Listener {
         }
 
         // Format: [lpPrefix] <username ~ front | systemName>[lpSuffix]: message
-        // §7 = gray, §f = white, §b = aqua, §r = reset
-        String format = lpPrefix
+        String legacyFormat = lpPrefix
                 + "§7<§f" + player.getName()
                 + "§7 ~ §f" + front
                 + "§7 | §b" + systemName
-                + "§7>§r" + lpSuffix
-                + " %2$s";
+                + "§7>§r" + lpSuffix;
 
-        event.setFormat(format);
+        Component prefix = LEGACY.deserialize(legacyFormat);
+
+        event.renderer((source, sourceDisplayName, message, viewer) ->
+                prefix.append(Component.text(" ")).append(message)
+        );
     }
 
     private String buildFrontString(PluralMain.PlayerSystemData data) {

@@ -5,7 +5,6 @@
 
 package win.doughmination.jaileddough.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +23,7 @@ public class SetJailCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(ChatColor.RED + "This command can only be used by players!");
+            sender.sendRichMessage("<red>This command can only be used by players!</red>");
             return true;
         }
 
@@ -35,18 +34,18 @@ public class SetJailCommand implements CommandExecutor {
                 double z = Double.parseDouble(args[2]);
                 plugin.setJailLocation(new Location(player.getWorld(), x, y, z));
             } catch (NumberFormatException e) {
-                player.sendMessage(ChatColor.RED + "Invalid coordinates! Use: /setjail <x> <y> <z>");
+                player.sendRichMessage("<red>Invalid coordinates! Use: /setjail <x> <y> <z></red>");
                 return true;
             }
         } else if (args.length == 0) {
             plugin.setJailLocation(player.getLocation());
         } else {
-            player.sendMessage(ChatColor.RED + "Usage: /setjail or /setjail <x> <y> <z>");
+            player.sendRichMessage("<red>Usage: /setjail or /setjail <x> <y> <z></red>");
             return true;
         }
 
         plugin.saveJailLocation();
-        player.sendMessage(ChatColor.GREEN + "Jail location has been set!");
+        player.sendRichMessage("<green>Jail location has been set!</green>");
         return true;
     }
 }

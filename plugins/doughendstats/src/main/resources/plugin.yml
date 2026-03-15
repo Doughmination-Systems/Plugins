@@ -2,7 +2,7 @@
 # Licensed under the ESAL-1.3 License
 
 name: DoughStatsEnd
-version: 5.0.0
+version: 5.1.0
 main: win.doughmination.statsend.StatsMain
 api-version: 1.21.11
 author: Doughmination

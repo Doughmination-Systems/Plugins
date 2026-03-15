@@ -27,18 +27,18 @@ public class JailCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (plugin.getJailLocation() == null) {
-            sender.sendMessage(Component.text("Jail location has not been set! Use /setjail first.", NamedTextColor.RED));
+            sender.sendRichMessage("<red>Jail location has not been set! Use /setjail first.</red>");
             return true;
         }
 
         if (args.length < 1 || args.length > 2) {
-            sender.sendMessage(Component.text("Usage: /jail <player> [time]", NamedTextColor.RED));
+            sender.sendRichMessage("<red>Usage: /jail <player> [time]</red>");
             return true;
         }
 
         Player target = plugin.getServer().getPlayer(args[0]);
         if (target == null) {
-            sender.sendMessage(Component.text("Player not found!", NamedTextColor.RED));
+            sender.sendRichMessage("<red>Player not found!</red>");
             return true;
         }
 
@@ -47,7 +47,7 @@ public class JailCommand implements CommandExecutor {
             try {
                 jailDurationMs = Long.parseLong(args[1]) * 1000L;
             } catch (NumberFormatException e) {
-                sender.sendMessage(Component.text("Invalid time! Use a whole number of seconds.", NamedTextColor.RED));
+                sender.sendRichMessage("<red>Invalid time! Use a whole number of seconds.</red>");
                 return true;
             }
         }
@@ -61,8 +61,8 @@ public class JailCommand implements CommandExecutor {
         }
 
         target.teleport(plugin.getJailLocation());
-        target.sendMessage(Component.text("You have been jailed!", NamedTextColor.RED));
-        sender.sendMessage(Component.text("Player " + target.getName() + " has been jailed!", NamedTextColor.GREEN));
+        target.sendRichMessage("<red>You have been jailed!</red>");
+        sender.sendRichMessage("<green>Player " + target.getName() + " has been jailed!</green>");
 
         LibMain doughApi = LibMain.getInstance();
         if (doughApi != null) {

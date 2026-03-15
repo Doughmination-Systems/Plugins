@@ -1,7 +1,7 @@
-package win.dougmination.plural.api;
+package win.doughmination.plural.api;
 
 import com.google.gson.*;
-import win.dougmination.plural.PluralMain;
+import win.doughmination.plural.PluralMain;
 
 import java.net.URI;
 import java.net.http.*;
