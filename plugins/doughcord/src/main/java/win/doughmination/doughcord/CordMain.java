@@ -20,6 +20,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import win.doughmination.api.LibMain;
+import win.doughmination.api.utils.ModrinthUpdateChecker;
+
 import win.doughmination.doughcord.commands.chests.*;
 import win.doughmination.doughcord.commands.moderation.*;
 import win.doughmination.doughcord.commands.other.*;
@@ -96,6 +98,9 @@ public class CordMain extends JavaPlugin {
         }
         RecipeManager.registerRecipes(this);
         PotionRecipeManager.registerRecipes(this);
+
+        String version = getConfig().getString("version", "unknown");
+        ModrinthUpdateChecker.check(this, "dBznLKL5", "doughcord", version);
     }
 
     @Override

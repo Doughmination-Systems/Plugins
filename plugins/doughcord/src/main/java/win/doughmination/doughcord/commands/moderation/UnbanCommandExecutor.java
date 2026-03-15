@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import win.doughmination.api.LibMain;
-import win.doughmination.api.BanData;
+import win.doughmination.api.utils.BanData;
 import win.doughmination.doughcord.CordMain;
 
 import java.util.ArrayList;

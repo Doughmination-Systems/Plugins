@@ -4,8 +4,9 @@
 # =======================
 # Plugin Config - DO NOT CHANGE! THIS WILL BREAK THE PLUGIN!
 # =======================
+version: 5.5.1 # DO NOT CHANGE THIS VALUE!
+
 plugin-info:
-  version: 5.5.0 # Your plugin version - Use to report issues
   authors:
     - "Doughmination"
   official-repo: "https://modding.doughmination.win"

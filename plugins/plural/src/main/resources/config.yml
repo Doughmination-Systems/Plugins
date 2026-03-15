@@ -1,5 +1,7 @@
 # Plural Cloud Plugin Configuration
 
+version: 5.2.1
+
 # The public URL of your Plural Cloud API server (no trailing slash)
 api_url: "https://plural.doughmination.win"
 

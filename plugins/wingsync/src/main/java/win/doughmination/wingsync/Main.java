@@ -20,9 +20,9 @@ import net.dv8tion.jda.api.entities.UserSnowflake;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 // Internal
-import win.doughmination.wingsync.listeners.StorageUtil;
-import win.doughmination.wingsync.listeners.GeneralListener;
+import win.doughmination.wingsync.listeners.*;
 import win.doughmination.wingsync.commands.*;
+import win.doughmination.api.utils.ModrinthUpdateChecker;
 
 // Java
 import java.util.List;
@@ -84,6 +84,10 @@ public class Main extends JavaPlugin {
         }
 
         connectDiscordBot();
+
+        String version = getConfig().getString("version", "unknown");
+        ModrinthUpdateChecker.check(this, "ktiR6WlB", "wingsync", getDescription().getVersion());
+        getLogger().info("WingSync Enabled.");
     }
 
     @Override

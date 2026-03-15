@@ -5,16 +5,15 @@
 
 package win.doughmination.jaileddough;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.entity.Player;
 import org.bstats.bukkit.Metrics;
+
 import win.doughmination.api.LibMain;
+import win.doughmination.api.utils.ModrinthUpdateChecker;
 import win.doughmination.jaileddough.commands.*;
 import win.doughmination.jaileddough.listeners.*;
 import win.doughmination.jaileddough.storage.*;
@@ -71,6 +70,9 @@ public class JailMain extends JavaPlugin {
                 registerCommands();
                 registerListeners();
                 startUnjailTask();
+
+                String version = getConfig().getString("version", "unknown");
+                ModrinthUpdateChecker.check(JailMain.this, "Fn23YjBQ", "jaileddough", version);
 
                 getLogger().info("JailedDough enabled successfully!");
             }

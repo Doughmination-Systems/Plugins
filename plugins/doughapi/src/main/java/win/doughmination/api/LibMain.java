@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bstats.bukkit.Metrics;
+import win.doughmination.api.utils.BanData;
+import win.doughmination.api.utils.JailData;
+import win.doughmination.api.utils.ModrinthUpdateChecker;
 
 public class LibMain extends JavaPlugin {
     private static LibMain instance;
@@ -52,6 +55,9 @@ public class LibMain extends JavaPlugin {
         saveDefaultConfig();
         setupDataFiles();
         loadBanData();
+
+        String version = getConfig().getString("version", "unknown");
+        ModrinthUpdateChecker.check(this, "rBAEI1nf", "doughapi", version);
 
         getLogger().info("DoughAPI has been initialized!");
     }

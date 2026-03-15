@@ -11,7 +11,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import win.doughmination.api.LibMain;
-import win.doughmination.api.BanData;
+import win.doughmination.api.utils.BanData;
 import win.doughmination.doughcord.CordMain;
 
 import java.text.SimpleDateFormat;

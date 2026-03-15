@@ -2,7 +2,7 @@
 # Licensed under the ESAL-1.3 License
 
 name: JailedDough
-version: 5.0.0
+version: 5.0.1
 main: win.doughmination.jaileddough.JailMain
 author: Doughmination
 website: https://modding.doughmination.win
@@ -49,4 +49,7 @@ permissions:
     default: op
   jailplugin.reload:
     description: Allows reloading the plugin configuration
+    default: op
+  dough.alerts:
+    description: Allows players to receive alerts about plugin updates.
     default: op

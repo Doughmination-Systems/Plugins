@@ -7,7 +7,7 @@ import win.doughmination.plural.listeners.ChatProxyListener;
 import win.doughmination.plural.listeners.PlayerConnectionListener;
 import win.doughmination.plural.commands.*;
 import win.doughmination.plural.listeners.*;
-import win.doughmination.plural.api.CloudApiClient;
+import win.doughmination.plural.api.*;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +42,9 @@ public class PluralMain extends JavaPlugin {
         connectionListener = new PlayerConnectionListener();
         getServer().getPluginManager().registerEvents(new ChatProxyListener(), this);
         getServer().getPluginManager().registerEvents(connectionListener, this);
+
+        String version = getConfig().getString("version", "unknown");
+        ModrinthApi.check(this, "C6SDmIS1", "plural", version);
 
         getLogger().info("[Plural] " + MOD_NAME + " loaded!");
     }

@@ -2,7 +2,7 @@
 # Licensed under the ESAL-1.3 License
 
 name: Doughcord
-version: 5.5.0
+version: 5.5.1
 main: win.doughmination.doughcord.CordMain
 api-version: 1.21.11
 depend: [DoughAPI]
@@ -254,4 +254,7 @@ permissions:
     default: op
   dough.visitbase:
     description: Allows players to teleport to other players' bases.
+    default: op
+  dough.alerts:
+    description: Allows players to receive alerts about plugin updates.
     default: op

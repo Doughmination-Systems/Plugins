@@ -2,7 +2,7 @@
 # Licensed under the ESAL-1.3 License
 
 name: DoughStatsEnd
-version: 5.1.0
+version: 5.1.1
 main: win.doughmination.statsend.StatsMain
 api-version: 1.21.11
 author: Doughmination
@@ -28,3 +28,6 @@ permissions:
   statsend.participate:
     description: Permission to participate in dragon events
     default: true
+  statsend.alerts:
+    description: Permission to receive update alerts
+    default: op

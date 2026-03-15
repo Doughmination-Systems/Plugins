@@ -5,6 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bstats.bukkit.Metrics;
+import win.doughmination.statsend.utils.EventListener;
+import win.doughmination.statsend.utils.EventManager;
 
 public class StatsMain extends JavaPlugin {
 

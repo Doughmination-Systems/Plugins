@@ -5,14 +5,11 @@
 
 package win.doughmination.jaileddough.commands;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import win.doughmination.api.JailData;
+import win.doughmination.api.utils.JailData;
 import win.doughmination.api.LibMain;
 import win.doughmination.jaileddough.JailMain;
 

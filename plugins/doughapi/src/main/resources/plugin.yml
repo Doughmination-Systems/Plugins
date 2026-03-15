@@ -3,8 +3,13 @@
 
 name: DoughAPI
 main: win.doughmination.api.LibMain
-version: 5.1.0
+version: 5.1.1
 api-version: 1.21.11
 description: Shared library for Doughmination Plugins
 author: Doughmination
 website: https://modding.dougmination.win/
+
+permissions:
+  doughapi.alerts:
+    description: Allows access to plugin update alerts.
+    default: op

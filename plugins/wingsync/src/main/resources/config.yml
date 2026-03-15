@@ -15,6 +15,8 @@
 # After updating this file, use /wsreload in-game to connect the bot.
 # ========================================
 
+version: 5.0.1
+
 discord:
   # Your Discord bot token - REQUIRED
   # Replace YOUR_DISCORD_BOT_TOKEN with your actual token
