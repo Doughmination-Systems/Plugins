@@ -24,7 +24,7 @@ import java.util.UUID;
 
 /**
  * Manages the ban system — formerly part of LibMain.
- * Persists to plugins/DoughUtils/bans.json.
+ * Persists to plugins/DoughUtils/data/config/bans.json.
  */
 public class BanManager {
 
@@ -35,7 +35,7 @@ public class BanManager {
 
     public BanManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.banDataFile = new File(plugin.getDataFolder(), "bans.json");
+        this.banDataFile = new File(new File(plugin.getDataFolder(), "data/config"), "bans.json");
     }
 
     // -----------------------------------------------------------------------
@@ -43,6 +43,7 @@ public class BanManager {
     // -----------------------------------------------------------------------
 
     public void load() {
+        banDataFile.getParentFile().mkdirs();
         if (!banDataFile.exists()) return;
         try (FileReader reader = new FileReader(banDataFile)) {
             Type type = new TypeToken<Map<String, BanData>>(){}.getType();

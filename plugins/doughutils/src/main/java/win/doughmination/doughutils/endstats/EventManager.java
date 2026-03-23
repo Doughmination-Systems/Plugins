@@ -35,7 +35,7 @@ public class EventManager {
     public EventManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
-        this.dataFile = new File(plugin.getDataFolder(), "event_data.json");
+        this.dataFile = new File(new File(plugin.getDataFolder(), "data/config"), "event_data.json");
         loadData();
     }
 
@@ -139,6 +139,7 @@ public class EventManager {
             data.firstDragonKilled = firstDragonKilled;
 
             try (FileWriter writer = new FileWriter(dataFile)) {
+                dataFile.getParentFile().mkdirs();
                 gson.toJson(data, writer);
             }
         } catch (IOException e) {
@@ -147,6 +148,7 @@ public class EventManager {
     }
 
     private void loadData() {
+        dataFile.getParentFile().mkdirs();
         if (!dataFile.exists()) return;
         try (FileReader reader = new FileReader(dataFile)) {
             EventData data = gson.fromJson(reader, EventData.class);

@@ -20,10 +20,11 @@ public class TimerStorage {
     private final Map<UUID, Long> timers = new HashMap<>();
 
     public TimerStorage(File dataFolder) {
-        this.file = new File(dataFolder, "jail_timers.json");
+        this.file = new File(new File(dataFolder, "data/config"), "jail_timers.json");
     }
 
     public void load() {
+        file.getParentFile().mkdirs();
         if (!file.exists()) return;
         try (Reader reader = new FileReader(file)) {
             JsonObject root = gson.fromJson(reader, JsonObject.class);

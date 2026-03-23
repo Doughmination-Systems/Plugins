@@ -134,7 +134,7 @@ public class Main extends JavaPlugin {
         RecipeManager.registerRecipes(this);
         PotionRecipeManager.registerRecipes(this);
 
-        String version = doughConfig.getVersion();
+        String version = getPluginMeta().getVersion();
         ModrinthUpdateChecker.check(this, "wHpRTEmg", "doughutils", version);
     }
 
@@ -171,6 +171,8 @@ public class Main extends JavaPlugin {
         reg("meow",        new meowCommandExecutor(this));
         reg("bark",        new barkCommandExecutor(this));
         reg("kiss",        new kissCommandExecutor(this));
+        reg("boop",        new boopCommandExecutor(this));
+        reg("hug",         new hugCommandExecutor(this));
         reg("playtime",    new playtimeCommandExecutor(this));
         reg("veinminer",   veinMinerExecutor);
         reg("echest",      new EChestCommandExecutor(this));
@@ -201,7 +203,7 @@ public class Main extends JavaPlugin {
             eventManager.startEvent();
             sender.sendRichMessage("<green>Dragon event started!</green>");
             getServer().broadcast(net.kyori.adventure.text.minimessage.MiniMessage.miniMessage()
-                .deserialize("<yellow>Dragon Event has begun! Head to the End to participate!</yellow>"));
+                    .deserialize("<yellow>Dragon Event has begun! Head to the End to participate!</yellow>"));
             return true;
         });
         getCommand("estop").setExecutor((sender, cmd, label, args) -> {
@@ -319,11 +321,11 @@ public class Main extends JavaPlugin {
         org.bukkit.World world = getServer().getWorld(doughConfig.getJailWorld());
         if (world == null) return;
         jailLocation = new Location(world,
-            doughConfig.getJailX(),
-            doughConfig.getJailY(),
-            doughConfig.getJailZ(),
-            doughConfig.getJailYaw(),
-            doughConfig.getJailPitch());
+                doughConfig.getJailX(),
+                doughConfig.getJailY(),
+                doughConfig.getJailZ(),
+                doughConfig.getJailYaw(),
+                doughConfig.getJailPitch());
     }
 
     public void saveJailLocation() {
@@ -418,4 +420,3 @@ public class Main extends JavaPlugin {
         return banManager.getAllBans();
     }
 }
-

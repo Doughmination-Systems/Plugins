@@ -78,7 +78,7 @@ public class StorageUtil {
     // =========================================================================
 
     private void setupFileStorage() {
-        dataFile = new File(plugin.getDataFolder(), "wingsync_playerdata.json");
+        dataFile = new File(new File(plugin.getDataFolder(), "data/config"), "wingsync_playerdata.json");
         if (!dataFile.exists()) {
             try { dataFile.getParentFile().mkdirs(); dataFile.createNewFile(); saveFileData(); }
             catch (IOException e) { plugin.getLogger().severe("Failed to create wingsync_playerdata.json: " + e.getMessage()); }

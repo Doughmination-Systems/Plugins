@@ -66,7 +66,8 @@ public class DoughCommandExecutor implements CommandExecutor, TabCompleter {
             header("roleplay"),
             entry("/meow",          "Send a cute cat message."),
             entry("/bark",          "Send a cute dog message."),
-            entry("/kiss <player>", "Send a kiss to another player.")
+            entry("/kiss <player>", "Send a kiss to another player."),
+            entry("/boop <player", "Boop another player")
         ));
 
         categoryHelp.put("chests", List.of(

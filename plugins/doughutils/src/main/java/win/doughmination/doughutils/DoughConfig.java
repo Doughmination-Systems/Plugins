@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 public class DoughConfig {
 
-    private static final String FILE_NAME = "config.json";
+    private static final String FILE_NAME = "defaults.json";
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     private final Main plugin;
@@ -49,36 +49,36 @@ public class DoughConfig {
     public DoughConfig(Main plugin) {
         this.plugin = plugin;
         this.log = plugin.getLogger();
-        this.configFile = new File(plugin.getDataFolder(), FILE_NAME);
+        this.configFile = new File(new File(plugin.getDataFolder(), "data/config"), FILE_NAME);
     }
 
     /**
-     * Loads config.json from the plugin data folder, generating a fresh default
+     * Loads defaults.json from the plugin data folder, generating a fresh default
      * programmatically if the file is absent (no bundled resource required).
      */
     public void load() {
         if (!configFile.exists()) {
-            plugin.getDataFolder().mkdirs();
+            configFile.getParentFile().mkdirs();
             writeDefaults();
             save();
-            log.info("DoughConfig: generated default config.json.");
+            log.info("DoughConfig: generated default defaults.json.");
         }
 
         try (Reader reader = new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8)) {
             JsonElement el = JsonParser.parseReader(reader);
             root = el.isJsonObject() ? el.getAsJsonObject() : new JsonObject();
         } catch (IOException e) {
-            log.severe("DoughConfig: failed to load config.json: " + e.getMessage());
+            log.severe("DoughConfig: failed to load defaults.json: " + e.getMessage());
             root = new JsonObject();
         }
     }
 
-    /** Writes the current in-memory config back to config.json. */
+    /** Writes the current in-memory config back to defaults.json. */
     public void save() {
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8)) {
             GSON.toJson(root, writer);
         } catch (IOException e) {
-            log.severe("DoughConfig: failed to save config.json: " + e.getMessage());
+            log.severe("DoughConfig: failed to save defaults.json: " + e.getMessage());
         }
     }
 
@@ -86,11 +86,9 @@ public class DoughConfig {
     // Default generation
     // -------------------------------------------------------------------------
 
-    /** Populates root with all default values. Called only when no config.json exists yet. */
+    /** Populates root with all default values. Called only when no defaults.json exists yet. */
     private void writeDefaults() {
         root = new JsonObject();
-
-        set("version", new com.google.gson.JsonPrimitive("1.0.0"));
 
         // Flight
         set("flight.allflight",               new com.google.gson.JsonPrimitive(false));
@@ -239,12 +237,6 @@ public class DoughConfig {
     // =========================================================================
     // Public typed API
     // =========================================================================
-
-    // ── Meta ─────────────────────────────────────────────────────────────────
-
-    public String getVersion() {
-        return getString("version", "unknown");
-    }
 
     // ── Flight ───────────────────────────────────────────────────────────────
 

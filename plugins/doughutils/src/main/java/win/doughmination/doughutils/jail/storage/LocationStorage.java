@@ -22,10 +22,11 @@ public class LocationStorage {
     private final Map<UUID, JsonObject> locationData = new HashMap<>();
 
     public LocationStorage(File dataFolder) {
-        this.file = new File(dataFolder, "pre_jail_locations.json");
+        this.file = new File(new File(dataFolder, "data/config"), "pre_jail_locations.json");
     }
 
     public void load() {
+        file.getParentFile().mkdirs();
         if (!file.exists()) return;
         try (Reader reader = new FileReader(file)) {
             JsonObject root = gson.fromJson(reader, JsonObject.class);
