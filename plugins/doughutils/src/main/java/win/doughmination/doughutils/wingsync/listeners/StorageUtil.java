@@ -55,7 +55,7 @@ public class StorageUtil {
     // =========================================================================
 
     public void setup() {
-        String type = plugin.getConfig().getString("wingsync.storage.type", "json").toLowerCase();
+        String type = plugin.getDoughConfig().getWingSyncStorageType();
         switch (type) {
             case "postgresql", "postgres" -> { storageType = StorageType.POSTGRESQL; setupPostgresql(); }
             case "mysql"                  -> { storageType = StorageType.MYSQL; setupMysql(); }
@@ -112,11 +112,11 @@ public class StorageUtil {
     // =========================================================================
 
     private void setupMysql() {
-        String host = plugin.getConfig().getString("wingsync.storage.host", "localhost");
-        int port    = plugin.getConfig().getInt("wingsync.storage.port", 3306);
-        String db   = plugin.getConfig().getString("wingsync.storage.database", "minecraft");
-        String user = plugin.getConfig().getString("wingsync.storage.username", "root");
-        String pass = plugin.getConfig().getString("wingsync.storage.password", "");
+        String host = plugin.getDoughConfig().getWingSyncStorageHost();
+        int port    = plugin.getDoughConfig().getWingSyncStoragePort(3306);
+        String db   = plugin.getDoughConfig().getWingSyncStorageDatabase();
+        String user = plugin.getDoughConfig().getWingSyncStorageUsername("root");
+        String pass = plugin.getDoughConfig().getWingSyncStoragePassword();
         try {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + db + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
@@ -133,11 +133,11 @@ public class StorageUtil {
     }
 
     private void setupPostgresql() {
-        String host = plugin.getConfig().getString("wingsync.storage.host", "localhost");
-        int port    = plugin.getConfig().getInt("wingsync.storage.port", 5432);
-        String db   = plugin.getConfig().getString("wingsync.storage.database", "minecraft");
-        String user = plugin.getConfig().getString("wingsync.storage.username", "postgres");
-        String pass = plugin.getConfig().getString("wingsync.storage.password", "");
+        String host = plugin.getDoughConfig().getWingSyncStorageHost();
+        int port    = plugin.getDoughConfig().getWingSyncStoragePort(5432);
+        String db   = plugin.getDoughConfig().getWingSyncStorageDatabase();
+        String user = plugin.getDoughConfig().getWingSyncStorageUsername("postgres");
+        String pass = plugin.getDoughConfig().getWingSyncStoragePassword();
         try {
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl("jdbc:postgresql://" + host + ":" + port + "/" + db);

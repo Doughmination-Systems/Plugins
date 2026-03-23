@@ -28,7 +28,7 @@ public class FlightCheckTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        boolean allFlightEnabled = doughPlugin.getConfig().getBoolean("AllFlight");
+        boolean allFlightEnabled = doughPlugin.getDoughConfig().isAllFlight();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             UUID playerUUID = player.getUniqueId();

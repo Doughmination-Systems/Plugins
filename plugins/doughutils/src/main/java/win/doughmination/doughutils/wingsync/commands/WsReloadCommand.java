@@ -29,7 +29,7 @@ public class WsReloadCommand implements CommandExecutor {
         plugin.reloadConfig();
 
         StorageUtil.StorageType currentType = plugin.getWingSyncManager().getStorageUtil().getStorageType();
-        String newTypeStr = plugin.getConfig().getString("wingsync.storage.type", "json").toLowerCase();
+        String newTypeStr = plugin.getDoughConfig().getWingSyncStorageType();
         StorageUtil.StorageType newType = parseStorageType(newTypeStr);
 
         if (currentType != newType) {

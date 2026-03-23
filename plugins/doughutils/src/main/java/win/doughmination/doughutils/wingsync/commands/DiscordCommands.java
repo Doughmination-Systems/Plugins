@@ -70,7 +70,7 @@ public class DiscordCommands extends ListenerAdapter {
         };
         String details = type == StorageUtil.StorageType.FILE
                 ? "Records: " + storage.getPlayerDataMap().size()
-                : plugin.getConfig().getString("wingsync.storage.host") + ":" + plugin.getConfig().getInt("wingsync.storage.port");
+                : plugin.getDoughConfig().getWingSyncStorageHost() + ":" + plugin.getDoughConfig().getWingSyncStoragePort(3306);
         event.reply("**WingSync Storage**\nType: " + typeName + "\nDetails: " + details).queue();
     }
 
@@ -117,7 +117,7 @@ public class DiscordCommands extends ListenerAdapter {
         event.deferReply().queue();
         String playerName = event.getOption("player").getAsString();
         String discordId = event.getUser().getId();
-        String adminId = plugin.getConfig().getString("wingsync.discord.admin_id", "");
+        String adminId = plugin.getDoughConfig().getWingSyncAdminId();
 
         Bukkit.getScheduler().runTask(plugin, () -> {
             try {
@@ -152,7 +152,7 @@ public class DiscordCommands extends ListenerAdapter {
         event.deferReply().queue();
         String playerName = event.getOption("player").getAsString();
         String discordId = event.getUser().getId();
-        String adminId = plugin.getConfig().getString("wingsync.discord.admin_id", "");
+        String adminId = plugin.getDoughConfig().getWingSyncAdminId();
 
         if (!discordId.equals(adminId)) {
             event.getHook().sendMessage("[ERROR] Only the admin can pardon players.").queue();

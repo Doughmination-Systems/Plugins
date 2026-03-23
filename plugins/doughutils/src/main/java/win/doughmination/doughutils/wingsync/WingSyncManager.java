@@ -37,6 +37,10 @@ public class WingSyncManager {
     // =========================================================================
 
     public void onEnable() {
+        if (!plugin.getDoughConfig().isWingSyncEnabled()) {
+            plugin.getLogger().info("WingSync is disabled in config — skipping.");
+            return;
+        }
         storageUtil = new StorageUtil(plugin);
         storageUtil.setup();
         connectDiscordBot();
@@ -44,6 +48,7 @@ public class WingSyncManager {
     }
 
     public void onDisable() {
+        if (!plugin.getDoughConfig().isWingSyncEnabled()) return;
         if (storageUtil != null) storageUtil.shutdown();
         if (jda != null) {
             jda.shutdown();
@@ -70,7 +75,7 @@ public class WingSyncManager {
             botConnected = false;
         }
 
-        String token = plugin.getConfig().getString("wingsync.discord.token", "");
+        String token = plugin.getDoughConfig().getWingSyncToken();
         if (token.isEmpty() || token.equals("YOUR_DISCORD_BOT_TOKEN")) {
             plugin.getLogger().warning("WingSync: Discord bot token not configured. Use /wsreload after setting it.");
             botConnected = false;
@@ -104,13 +109,13 @@ public class WingSyncManager {
     // =========================================================================
 
     public void banUserFromDiscord(String playerName) {
-        if (!plugin.getConfig().getBoolean("wingsync.discord.sync_bans", true)) return;
+        if (!plugin.getDoughConfig().isWingSyncBanSyncEnabled()) return;
         if (jda == null || !botConnected) { plugin.getLogger().warning("WingSync: bot not connected, cannot ban " + playerName); return; }
 
         String discordId = storageUtil.getDiscordIdByUsername(playerName);
         if (discordId == null) return;
 
-        String guildId = plugin.getConfig().getString("wingsync.discord.guild_id", "");
+        String guildId = plugin.getDoughConfig().getWingSyncGuildId();
         if (guildId.isEmpty() || guildId.equals("YOUR_DISCORD_GUILD_ID")) { plugin.getLogger().warning("WingSync: guild_id not set."); return; }
 
         Guild guild = jda.getGuildById(guildId);
@@ -129,7 +134,7 @@ public class WingSyncManager {
         String discordId = storageUtil.getDiscordIdByUsername(playerName);
         if (discordId == null) return;
 
-        String guildId = plugin.getConfig().getString("wingsync.discord.guild_id", "");
+        String guildId = plugin.getDoughConfig().getWingSyncGuildId();
         Guild guild = jda.getGuildById(guildId);
         if (guild == null) return;
 

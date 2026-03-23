@@ -271,7 +271,7 @@ public class handleOreVeinminer {
     }
 
     private void findOreBlocks(Location start, Material blockType, Set<Location> foundBlocks) {
-        int maxBlocks = plugin.getConfig().getInt("ore-remover.max-blocks", 100);
+        int maxBlocks = plugin.getDoughConfig().getOreRemoverMaxBlocks();
 
         Queue<Location> toCheck = new LinkedList<>();
         toCheck.add(start);

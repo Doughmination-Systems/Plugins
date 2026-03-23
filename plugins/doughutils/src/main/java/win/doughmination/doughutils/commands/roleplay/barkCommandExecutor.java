@@ -38,7 +38,7 @@ public class barkCommandExecutor implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        List<String> barkMessages = plugin.getConfig().getStringList("bark-command.messages");
+        List<String> barkMessages = plugin.getDoughConfig().getBarkMessages();
         if (barkMessages.isEmpty()) {
             player.sendMessage(Component.text("No bark messages are set in the config!", NamedTextColor.RED));
             return true;

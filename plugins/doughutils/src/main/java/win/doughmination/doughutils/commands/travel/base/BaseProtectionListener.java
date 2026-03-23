@@ -53,7 +53,7 @@ public class BaseProtectionListener implements Listener {
      * that the visitor is NOT trusted in. Returns null if no conflict.
      */
     private UUID getViolatedOwner(Player visitor, Location loc) {
-        double radius = plugin.getConfig().getDouble("flight.base-radius", 100);
+        double radius = plugin.getDoughConfig().getBaseFlightRadius();
 
         for (Map.Entry<UUID, Location> entry : plugin.getBases().entrySet()) {
             UUID ownerUUID = entry.getKey();
@@ -103,7 +103,7 @@ public class BaseProtectionListener implements Listener {
         Set<UUID> warned = warnedPlayers.get(player.getUniqueId());
         if (warned == null || warned.isEmpty()) return;
 
-        double radius = plugin.getConfig().getDouble("flight.base-radius", 100);
+        double radius = plugin.getDoughConfig().getBaseFlightRadius();
 
         // Remove any owners whose base the player has now left
         warned.removeIf(ownerUUID -> {

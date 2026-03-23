@@ -52,17 +52,17 @@ public class spawnCommandExecutor implements CommandExecutor, TabCompleter {
     }
 
     private Location getSpawnLocation() {
-        if (!plugin.getConfig().contains("spawn.world")) {
+        if (!plugin.getDoughConfig().hasSpawnLocation()) {
             Bukkit.getLogger().warning("Spawn location not found in config!");
             return null;
         }
         try {
-            String worldName = plugin.getConfig().getString("spawn.world");
-            double x = plugin.getConfig().getDouble("spawn.x");
-            double y = plugin.getConfig().getDouble("spawn.y");
-            double z = plugin.getConfig().getDouble("spawn.z");
-            float yaw   = (float) plugin.getConfig().getDouble("spawn.yaw");
-            float pitch = (float) plugin.getConfig().getDouble("spawn.pitch");
+            String worldName = plugin.getDoughConfig().getSpawnWorld();
+            double x = plugin.getDoughConfig().getSpawnX();
+            double y = plugin.getDoughConfig().getSpawnY();
+            double z = plugin.getDoughConfig().getSpawnZ();
+            float yaw   = plugin.getDoughConfig().getSpawnYaw();
+            float pitch = plugin.getDoughConfig().getSpawnPitch();
             World world = Bukkit.getWorld(worldName);
             if (world == null) { Bukkit.getLogger().severe("Invalid spawn world: " + worldName); return null; }
             return new Location(world, x, y, z, yaw, pitch);

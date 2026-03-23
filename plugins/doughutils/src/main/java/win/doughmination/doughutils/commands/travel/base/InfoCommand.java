@@ -41,7 +41,7 @@ public class InfoCommand {
             return true;
         }
 
-        double radius = plugin.getConfig().getDouble("flight.base-radius", 100);
+        double radius = plugin.getDoughConfig().getBaseFlightRadius();
 
         // Header
         player.sendMessage(Component.text("━━━━━━━━━━━━━━━━━━━━━━", NamedTextColor.GOLD));

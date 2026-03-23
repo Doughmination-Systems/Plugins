@@ -44,7 +44,7 @@ public class TpCommand {
         Location baseLocation = plugin.getBases().get(uuid);
         plugin.getBackLocationManager().set(uuid, player.getLocation());
         if (player.teleport(baseLocation)) {
-            String soundName = plugin.getConfig().getString("sounds.base", "ENTITY_ENDERMAN_TELEPORT");
+            String soundName = plugin.getDoughConfig().getBaseSound();
             Sound sound = org.bukkit.Registry.SOUNDS.get(
                 org.bukkit.NamespacedKey.minecraft(soundName.toLowerCase())
             );

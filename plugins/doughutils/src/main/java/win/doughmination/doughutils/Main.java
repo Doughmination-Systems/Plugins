@@ -42,6 +42,7 @@ import win.doughmination.doughutils.wingsync.listeners.*;
 
 public class Main extends JavaPlugin {
 
+    private DoughConfig doughConfig;
     private Metrics metrics;
     private final Map<UUID, Long>     playtimeMap     = new HashMap<>();
     private final Map<UUID, Long>     loginTimestamps = new HashMap<>();
@@ -76,7 +77,8 @@ public class Main extends JavaPlugin {
 
         getLogger().info("DoughUtils is starting up...");
 
-        saveDefaultConfig();
+        doughConfig = new DoughConfig(this);
+        doughConfig.load();
 
         playerDataManager = new PlayerDataManager(this);
 
@@ -132,7 +134,7 @@ public class Main extends JavaPlugin {
         RecipeManager.registerRecipes(this);
         PotionRecipeManager.registerRecipes(this);
 
-        String version = getConfig().getString("version", "unknown");
+        String version = doughConfig.getVersion();
         ModrinthUpdateChecker.check(this, "wHpRTEmg", "doughutils", version);
     }
 
@@ -287,6 +289,7 @@ public class Main extends JavaPlugin {
     // Public API
     // -------------------------------------------------------------------------
 
+    public DoughConfig               getDoughConfig()               { return doughConfig; }
     public BackLocationManager      getBackLocationManager()      { return backLocationManager; }
     public PlayerDataManager        getPlayerDataManager()        { return playerDataManager; }
     public BanManager               getBanManager()               { return banManager; }
@@ -312,26 +315,26 @@ public class Main extends JavaPlugin {
     public void setJailLocation(Location loc) { this.jailLocation = loc; }
 
     public void loadJailLocation() {
-        if (!getConfig().contains("jail.world")) return;
-        org.bukkit.World world = getServer().getWorld(getConfig().getString("jail.world"));
+        if (!doughConfig.hasJailLocation()) return;
+        org.bukkit.World world = getServer().getWorld(doughConfig.getJailWorld());
         if (world == null) return;
         jailLocation = new Location(world,
-            getConfig().getDouble("jail.x"),
-            getConfig().getDouble("jail.y"),
-            getConfig().getDouble("jail.z"),
-            (float) getConfig().getDouble("jail.yaw"),
-            (float) getConfig().getDouble("jail.pitch"));
+            doughConfig.getJailX(),
+            doughConfig.getJailY(),
+            doughConfig.getJailZ(),
+            doughConfig.getJailYaw(),
+            doughConfig.getJailPitch());
     }
 
     public void saveJailLocation() {
         if (jailLocation == null) return;
-        getConfig().set("jail.world",  jailLocation.getWorld().getName());
-        getConfig().set("jail.x",      jailLocation.getX());
-        getConfig().set("jail.y",      jailLocation.getY());
-        getConfig().set("jail.z",      jailLocation.getZ());
-        getConfig().set("jail.yaw",    (double) jailLocation.getYaw());
-        getConfig().set("jail.pitch",  (double) jailLocation.getPitch());
-        saveConfig();
+        doughConfig.setJailWorld(jailLocation.getWorld().getName());
+        doughConfig.setJailX(jailLocation.getX());
+        doughConfig.setJailY(jailLocation.getY());
+        doughConfig.setJailZ(jailLocation.getZ());
+        doughConfig.setJailYaw(jailLocation.getYaw());
+        doughConfig.setJailPitch(jailLocation.getPitch());
+        doughConfig.save();
     }
 
     // -------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public class FlightListener implements Listener {
         Player player = event.getPlayer();
         UUID playerUUID = player.getUniqueId();
 
-        if (doughPlugin.getConfig().getBoolean("AllFlight")) {
+        if (doughPlugin.getDoughConfig().isAllFlight()) {
             if (!player.getAllowFlight()) {
                 player.setAllowFlight(true);
                 player.sendMessage(Component.text("Flight enabled globally.", NamedTextColor.GREEN));

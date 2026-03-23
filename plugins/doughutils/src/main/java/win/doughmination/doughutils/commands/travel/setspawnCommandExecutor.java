@@ -46,13 +46,13 @@ public class setspawnCommandExecutor implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        plugin.getConfig().set("spawn.world", world.getName());
-        plugin.getConfig().set("spawn.x", location.getX());
-        plugin.getConfig().set("spawn.y", location.getY());
-        plugin.getConfig().set("spawn.z", location.getZ());
-        plugin.getConfig().set("spawn.yaw", location.getYaw());
-        plugin.getConfig().set("spawn.pitch", location.getPitch());
-        plugin.saveConfig();
+        plugin.getDoughConfig().setSpawnWorld(world.getName());
+        plugin.getDoughConfig().setSpawnX(location.getX());
+        plugin.getDoughConfig().setSpawnY(location.getY());
+        plugin.getDoughConfig().setSpawnZ(location.getZ());
+        plugin.getDoughConfig().setSpawnYaw(location.getYaw());
+        plugin.getDoughConfig().setSpawnPitch(location.getPitch());
+        plugin.getDoughConfig().save();
 
         world.setSpawnLocation(location);
 

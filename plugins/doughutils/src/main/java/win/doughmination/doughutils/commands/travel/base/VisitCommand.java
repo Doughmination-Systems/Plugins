@@ -115,7 +115,7 @@ public class VisitCommand implements CommandExecutor, TabCompleter {
             .orElse("");
 
         if (visitor.teleport(base)) {
-            String soundName = plugin.getConfig().getString("sounds.base", "ENTITY_ENDERMAN_TELEPORT");
+            String soundName = plugin.getDoughConfig().getBaseSound();
             Sound sound = org.bukkit.Registry.SOUNDS.get(
                 org.bukkit.NamespacedKey.minecraft(soundName.toLowerCase())
             );

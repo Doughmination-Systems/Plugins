@@ -3,7 +3,7 @@
 
 name: DoughUtils
 main: win.doughmination.doughutils.Main
-version: 1.0.0
+version: 1.1.0
 api-version: 1.21.11
 author: Doughmination
 website: https://modding.doughmination.win

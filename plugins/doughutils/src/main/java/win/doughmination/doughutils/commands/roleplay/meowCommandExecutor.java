@@ -38,7 +38,7 @@ public class meowCommandExecutor implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        List<String> meowMessages = plugin.getConfig().getStringList("meow-command.messages");
+        List<String> meowMessages = plugin.getDoughConfig().getMeowMessages();
         if (meowMessages.isEmpty()) {
             player.sendMessage(Component.text("No kitty messages are set in the config!", NamedTextColor.RED));
             return true;

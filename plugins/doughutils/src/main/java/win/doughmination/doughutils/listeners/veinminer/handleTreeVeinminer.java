@@ -51,7 +51,7 @@ public class handleTreeVeinminer {
         boolean silkTouch = tool.getEnchantmentLevel(Enchantment.SILK_TOUCH) > 0;
 
         Set<Location> logBlocks = new HashSet<>();
-        findConnectedBlocks(start, blockType, logBlocks, plugin.getConfig().getInt("tree-remover.max-blocks", 100));
+        findConnectedBlocks(start, blockType, logBlocks, plugin.getDoughConfig().getTreeRemoverMaxBlocks());
 
         for (Location loc : logBlocks) {
             loc.getBlock().setType(Material.AIR);
@@ -64,7 +64,7 @@ public class handleTreeVeinminer {
             Set<Location> wartBlocks = new HashSet<>();
             for (Location logLoc : logBlocks) {
                 findConnectedWartBlocks(logLoc, wartBlock, wartBlocks,
-                        plugin.getConfig().getInt("tree-remover.max-leaf-blocks", 200));
+                        plugin.getDoughConfig().getTreeRemoverMaxLeafBlocks());
             }
             for (Location loc : wartBlocks) {
                 Block wb = loc.getBlock();
@@ -76,7 +76,7 @@ public class handleTreeVeinminer {
             // Normal trees: fast-decay leaves instantly on veinmine, use configured drop rates
             Set<Location> leafBlocks = new HashSet<>();
             for (Location logLoc : logBlocks) {
-                findConnectedLeaves(logLoc, leafBlocks, plugin.getConfig().getInt("tree-remover.max-leaf-blocks", 200));
+                findConnectedLeaves(logLoc, leafBlocks, plugin.getDoughConfig().getTreeRemoverMaxLeafBlocks());
             }
             for (Location loc : leafBlocks) {
                 Block leafBlock = loc.getBlock();
