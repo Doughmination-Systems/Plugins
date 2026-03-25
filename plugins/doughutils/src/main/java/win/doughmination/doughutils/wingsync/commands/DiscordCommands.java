@@ -88,9 +88,9 @@ public class DiscordCommands extends ListenerAdapter {
         String username = event.getOption("username").getAsString();
         String discordUsername = plugin.getWingSyncManager().getDiscordUsernameByMinecraftUsername(username);
         if (discordUsername != null)
-            event.getHook().sendMessage("**" + discordUsername + "** is linked to **" + username + "**").queue();
+            event.getHook().sendMessage("`" + discordUsername + "` is linked to `" + username + "`").queue();
         else
-            event.getHook().sendMessage("[ERROR] No Discord user linked to **" + username + "**").queue();
+            event.getHook().sendMessage("[ERROR] No Discord user linked to `" + username + "`").queue();
     }
 
     private void handleWhitelistCommand(SlashCommandInteractionEvent event) {
@@ -106,7 +106,7 @@ public class DiscordCommands extends ListenerAdapter {
                 UUID uuid = player.getUniqueId();
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist add " + playerName);
                 plugin.getWingSyncManager().storePlayerData(uuid.toString(), playerName, discordId, discordUsername);
-                event.getHook().sendMessage("[OK] **" + playerName + "** added to the whitelist!").queue();
+                event.getHook().sendMessage("[OK] `" + playerName + "` added to the whitelist!").queue();
             } catch (Exception e) {
                 event.getHook().sendMessage("[ERROR] Failed to add player to whitelist.").queue();
             }
@@ -127,7 +127,7 @@ public class DiscordCommands extends ListenerAdapter {
                 if (playerDiscordId != null && (playerDiscordId.equals(discordId) || discordId.equals(adminId))) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "whitelist remove " + playerName);
                     plugin.getWingSyncManager().removePlayerData(player.getUniqueId().toString());
-                    event.getHook().sendMessage("[OK] **" + playerName + "** removed from the whitelist.").queue();
+                    event.getHook().sendMessage("[OK] `" + playerName + "` removed from the whitelist.").queue();
                 } else {
                     event.getHook().sendMessage("[ERROR] You don't have permission to unwhitelist this player.").queue();
                 }
@@ -163,7 +163,7 @@ public class DiscordCommands extends ListenerAdapter {
             try {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "pardon " + playerName);
                 plugin.getWingSyncManager().unbanUserFromDiscord(playerName);
-                event.getHook().sendMessage("[OK] **" + playerName + "** has been pardoned!").queue();
+                event.getHook().sendMessage("[OK] `" + playerName + "` has been pardoned!").queue();
             } catch (Exception e) {
                 event.getHook().sendMessage("[ERROR] Failed to pardon player.").queue();
             }
