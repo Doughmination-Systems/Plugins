@@ -4,9 +4,10 @@
  */
 
 package win.doughmination.doughutils.listeners.veinminer;
-import win.doughmination.doughutils.Main;
 
+import win.doughmination.doughutils.Main;
 import win.doughmination.doughutils.commands.other.veinminerCommandExecutor;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandExecutor;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+
 import java.util.UUID;
 
 public class blockVeinminerListener implements Listener {
