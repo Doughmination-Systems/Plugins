@@ -3,7 +3,7 @@
 
 name: DoughUtils
 main: win.doughmination.doughutils.Main
-version: 1.1.1
+version: 1.2.0
 api-version: 1.21.11
 author: Doughmination
 website: https://modding.doughmination.win
@@ -88,25 +88,35 @@ commands:
     description: Display the plugin version.
     usage: /version
   # ── Roleplay ─────────────────────────────────────────────────────────────────
+  bap:
+    description: Bap a user
+    usage: /bap <user>
+    permission: dough.roleplay
+    permission-message: §cYou don't have permission to use this command!
   bark:
     description: Send a cute dog message.
     usage: /bark
-    permission: dough.bark
+    permission: dough.roleplay
+    permission-message: §cYou don't have permission to use this command!
+  boop:
+    description: Boop a user
+    usage: /boop <user>
+    permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
   kiss:
     description: Kiss another player.
     usage: /kiss <player>
-    permission: dough.kiss
+    permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
   meow:
     description: Send a cute cat message.
     usage: /meow
-    permission: dough.meow
+    permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
   spin:
     description: Spin yourself!
     usage: /spin
-    permission: dough.spin
+    permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
   # ── Chests ───────────────────────────────────────────────────────────────────
   echest:
@@ -215,20 +225,11 @@ permissions:
   dough.back:
     description: Use /back.
     default: true
-  dough.bark:
-    description: Use /bark.
-    default: true
   dough.craft:
     description: Use /craft.
     default: true
   dough.echest:
     description: Use /echest.
-    default: true
-  dough.kiss:
-    description: Use /kiss.
-    default: true
-  dough.meow:
-    description: Use /meow.
     default: true
   dough.playtime:
     description: Check your playtime.
@@ -239,11 +240,11 @@ permissions:
   dough.rtp:
     description: Use /rtp.
     default: true
+  dough.roleplay:
+    description: Use all roleplay commands
+    default: true
   dough.seen:
     description: Use /seen.
-    default: true
-  dough.spin:
-    description: Use /spin.
     default: true
   dough.tpa:
     description: Send teleport requests.

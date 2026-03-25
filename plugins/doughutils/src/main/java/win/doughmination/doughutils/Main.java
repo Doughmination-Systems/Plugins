@@ -187,10 +187,8 @@ public class Main extends JavaPlugin {
         reg("dough",        new DoughCommandExecutor(this));
         reg("version",      new VersionCommandExecutor(this));
         reg("doughreload",  new ReloadCommandExecutor(this));
-        BanCommandExecutor banExec = new BanCommandExecutor(this);
-        reg("doughban",     banExec);
-        UnbanCommandExecutor unbanExec = new UnbanCommandExecutor(this);
-        reg("doughpardon",  unbanExec);
+        reg("doughban",     new BanCommandExecutor(this));
+        reg("doughpardon",  new UnbanCommandExecutor(this));
         reg("doughbanlist", new BanlistCommandExecutor(this));
         reg("spin", new spinCommandExecutor(this));
         reg("seen",  new SeenCommandExecutor(this));
