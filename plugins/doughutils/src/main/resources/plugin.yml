@@ -103,6 +103,11 @@ commands:
     usage: /boop <user>
     permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
+  hug:
+    description: Hug another player.
+    usage: /hug <player>
+    permission: dough.roleplay
+    permission-message: §cYou don't have permission to use this command!
   kiss:
     description: Kiss another player.
     usage: /kiss <player>
