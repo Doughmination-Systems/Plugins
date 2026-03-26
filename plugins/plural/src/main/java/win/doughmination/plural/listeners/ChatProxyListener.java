@@ -2,7 +2,7 @@ package win.doughmination.plural.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
@@ -35,8 +35,9 @@ public class ChatProxyListener implements Listener {
         boolean useLuckPerms = PluralMain.getInstance().getConfig()
                 .getBoolean("luckperms_prefix", true);
 
-        String lpPrefix = "";
-        String lpSuffix = "";
+        Component lpPrefix = Component.empty();
+        Component lpSuffix = Component.empty();
+
         if (useLuckPerms) {
             try {
                 RegisteredServiceProvider<LuckPerms> provider =
@@ -47,8 +48,13 @@ public class ChatProxyListener implements Listener {
                     User lpUser = lp.getUserManager().getUser(uuid);
                     if (lpUser != null) {
                         CachedMetaData meta = lpUser.getCachedData().getMetaData();
-                        lpPrefix = meta.getPrefix() != null ? meta.getPrefix() : "";
-                        lpSuffix = meta.getSuffix() != null ? meta.getSuffix() : "";
+                        // Convert legacy "&" codes to Components
+                        if (meta.getPrefix() != null) {
+                            lpPrefix = LegacyComponentSerializer.legacyAmpersand().deserialize(meta.getPrefix());
+                        }
+                        if (meta.getSuffix() != null) {
+                            lpSuffix = LegacyComponentSerializer.legacyAmpersand().deserialize(meta.getSuffix());
+                        }
                     }
                 }
             } catch (NoClassDefFoundError | Exception ignored) {
@@ -56,17 +62,25 @@ public class ChatProxyListener implements Listener {
             }
         }
 
-        // Format: [lpPrefix] <username ~ front | systemName>[lpSuffix]: message
-        String legacyFormat = lpPrefix
-                + "§7<§f" + player.getName()
-                + "§7 ~ §f" + front
-                + "§7 | §b" + systemName
-                + "§7>§r" + lpSuffix;
+        // Build your custom front + systemName
+        Component frontComp = Component.text(front).color(NamedTextColor.WHITE);
+        Component systemComp = Component.text(systemName).color(NamedTextColor.AQUA);
 
-        Component prefix = LEGACY.deserialize(legacyFormat);
+        // Full formatted message: [Prefix] <player ~ front | systemName>[Suffix]: message
+        Component format = lpPrefix
+                .append(Component.text(" <").color(NamedTextColor.GRAY))
+                .append(Component.text(player.getName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" ~ ").color(NamedTextColor.GRAY))
+                .append(frontComp)
+                .append(Component.text(" | ").color(NamedTextColor.GRAY))
+                .append(systemComp)
+                .append(Component.text(">").color(NamedTextColor.GRAY))
+                .append(lpSuffix)
+                .append(Component.text(" ").color(NamedTextColor.WHITE));
 
+        // Attach the message component
         event.renderer((source, sourceDisplayName, message, viewer) ->
-                prefix.append(Component.text(" ")).append(message)
+                format.append(message.colorIfAbsent(NamedTextColor.WHITE))
         );
     }
 
