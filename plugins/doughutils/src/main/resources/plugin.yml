@@ -3,7 +3,7 @@
 
 name: DoughUtils
 main: win.doughmination.doughutils.Main
-version: 1.2.0
+version: 1.2.1
 api-version: 1.21.11
 author: Doughmination
 website: https://modding.doughmination.win
@@ -96,6 +96,11 @@ commands:
   bark:
     description: Send a cute dog message.
     usage: /bark
+    permission: dough.roleplay
+    permission-message: §cYou don't have permission to use this command!
+  bite:
+    description: Bite a user
+    usage: /bite <user>
     permission: dough.roleplay
     permission-message: §cYou don't have permission to use this command!
   boop:

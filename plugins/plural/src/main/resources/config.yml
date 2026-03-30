@@ -1,6 +1,6 @@
 # Plural Cloud Plugin Configuration
 
-version: 5.2.5
+version: 6.0.0
 
 # DO NOT CHANGE UNLESS YOU ARE SELF HOSTING A VERSION OF PLURALUI
 api_url: "https://plural.doughmination.win"
