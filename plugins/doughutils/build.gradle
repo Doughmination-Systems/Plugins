@@ -9,7 +9,7 @@ dependencies {
     compileOnly 'net.luckperms:api:5.5'
 
     // Discord bot
-    implementation 'net.dv8tion:JDA:6.3.2'
+    implementation 'net.dv8tion:JDA:6.4.0'
 
     // Database
     implementation 'org.postgresql:postgresql:42.7.10'
