@@ -1,0 +1,6 @@
+description = 'dWolves - Wolf trust system for Paper servers'
+
+
+shadowJar {
+    archiveBaseName.set('dWolves')
+}
