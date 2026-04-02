@@ -1,29 +1,22 @@
 package win.doughmination.dwolves.listeners;
 
-import net.kyori.adventure.text.Component;
+import io.papermc.paper.event.player.PlayerNameEntityEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
-import org.bukkit.event.entity.EntityTeleportEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import win.doughmination.dwolves.DWolvesPlugin;
 import win.doughmination.dwolves.trust.*;
 import win.doughmination.dwolves.util.Msg;
+import win.doughmination.dwolves.wolf.TempOwnershipManager;
 
 import java.util.Optional;
+import java.util.UUID;
 
-/**
- * Allows trusted players to interact with wolves they don't own.
- *
- * Right-click a wolf you're trusted on:
- *  - Sneaking  → toggle sit/stand
- *  - Normal    → toggle follow/stay (i.e. sit if following, stand if sitting near you)
- *
- * Rename is handled via anvil/name tag naturally — we intercept via EntityDamageByEntity
- * for protection and trust checks elsewhere. The actual rename permission check happens
- * in PlayerInteractEntityEvent when the player is holding a name tag.
- */
 public class WolfInteractListener implements Listener {
 
     private final DWolvesPlugin plugin;
@@ -32,6 +25,25 @@ public class WolfInteractListener implements Listener {
         this.plugin = plugin;
     }
 
+    // -------------------------------------------------------------------------
+    // Core helper — resolve real owner UUID regardless of temp transfer state
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns the real owner UUID of a wolf.
+     * If the wolf is under a temporary transfer, returns the original owner from
+     * TempOwnershipManager rather than wolf.getOwnerUniqueId() (which would
+     * return the trusted player's UUID while transferred).
+     */
+    private UUID realOwnerOf(Wolf wolf) {
+        TempOwnershipManager tom = plugin.getTempOwnershipManager();
+        return tom.getRealOwner(wolf).orElse(wolf.getOwnerUniqueId());
+    }
+
+    // -------------------------------------------------------------------------
+    // Right-click interaction
+    // -------------------------------------------------------------------------
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
@@ -39,81 +51,152 @@ public class WolfInteractListener implements Listener {
 
         Player player = event.getPlayer();
 
+        UUID realOwner = realOwnerOf(wolf);
+
         // Wolf has no owner — not our concern
-        if (wolf.getOwnerUniqueId() == null) return;
+        if (realOwner == null) return;
 
-        // Player is the owner — let vanilla handle it
-        if (wolf.getOwnerUniqueId().equals(player.getUniqueId())) return;
+        // Player is the real owner — let vanilla handle everything
+        if (realOwner.equals(player.getUniqueId())) return;
 
-        // Check trust
+        // Resolve trust entry against the real owner
         TrustManager tm = plugin.getTrustManager();
-        Optional<TrustEntry> entryOpt = tm.getEntry(wolf.getOwnerUniqueId(), player.getUniqueId());
+        Optional<TrustEntry> entryOpt = tm.getEntry(realOwner, player.getUniqueId());
 
         if (entryOpt.isEmpty()) {
-            // Not trusted — block interaction with the wolf
             event.setCancelled(true);
             player.sendMessage(Msg.error("You are not trusted with this wolf."));
             return;
         }
 
         TrustEntry entry = entryOpt.get();
+        Material heldItem = player.getInventory().getItemInMainHand().getType();
 
-        // Check if holding a name tag — requires FULL trust
-        boolean holdingNameTag = player.getInventory().getItemInMainHand().getType()
-                == org.bukkit.Material.NAME_TAG;
+        // Feeding — any food item a wolf accepts
+        if (isWolfFood(heldItem)) {
+            // Basic trust and above can feed
+            // Just allow — vanilla handles the heal/tame logic
+            return;
+        }
 
-        if (holdingNameTag) {
+        // Name tag — requires FULL trust
+        // We cancel here too as a fallback; PlayerNameEntityEvent is the primary guard
+        if (heldItem == Material.NAME_TAG) {
             if (!entry.getLevel().canRename()) {
                 event.setCancelled(true);
                 player.sendMessage(Msg.error("You need Full trust level to rename this wolf."));
             }
-            // else allow — vanilla will apply the name tag
             return;
         }
 
-        // Normal interaction — toggle sit/stand based on sneak
+        // Any other right-click — sit/stand toggle
         event.setCancelled(true);
 
-        if (player.isSneaking()) {
-            // Toggle sit
-            wolf.setSitting(!wolf.isSitting());
-            player.sendMessage(Msg.info("Wolf is now " + (wolf.isSitting() ? "sitting." : "standing.")));
-        } else {
-            if (wolf.isSitting()) {
-                // Unsit and make follow the trusted player temporarily
-                wolf.setSitting(false);
-                wolf.setTarget(null);
-                // Paper API: make the wolf follow this player by setting owner temporarily is not
-                // straightforward — instead we teleport to player and unsit so it pathfinds naturally.
-                // A cleaner follow is done via the /dw follow command (future enhancement).
-                player.sendMessage(Msg.info("Wolf is now following you. Right-click again while sneaking to sit it."));
-            } else {
-                wolf.setSitting(true);
-                player.sendMessage(Msg.info("Wolf is now sitting."));
+        if (wolf.isSitting()) {
+            // Unsit — only if real owner is offline (wolf is currently sitting,
+            // meaning it hasn't been transferred yet)
+            boolean ownerOnline = plugin.getServer().getPlayer(realOwner) != null;
+            if (ownerOnline) {
+                player.sendMessage(Msg.warn("The owner is online — you cannot take control of their wolf."));
+                return;
             }
+
+            plugin.getTempOwnershipManager().transfer(wolf, player);
+            player.sendMessage(Msg.info("Wolf is now following you. Right-click again to sit it back down."));
+        } else {
+            // Sit back down and revert ownership
+            plugin.getTempOwnershipManager().revert(wolf);
+            player.sendMessage(Msg.info("Wolf is now sitting."));
         }
     }
 
-    /**
-     * Prevent untrusted players from harming owned wolves.
-     */
+    // -------------------------------------------------------------------------
+    // Rename guard — PlayerNameEntityEvent fires when a name tag is applied
+    // -------------------------------------------------------------------------
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onEntityDamageByEntity(org.bukkit.event.entity.EntityDamageByEntityEvent event) {
+    public void onNameEntity(PlayerNameEntityEvent event) {
         if (!(event.getEntity() instanceof Wolf wolf)) return;
-        if (!(event.getDamager() instanceof Player player)) return;
-        if (wolf.getOwnerUniqueId() == null) return;
-        if (wolf.getOwnerUniqueId().equals(player.getUniqueId())) return;
+
+        Player player = event.getPlayer();
+        UUID realOwner = realOwnerOf(wolf);
+        if (realOwner == null) return;
+        if (realOwner.equals(player.getUniqueId())) return;
 
         TrustManager tm = plugin.getTrustManager();
-        if (!tm.isTrusted(wolf.getOwnerUniqueId(), player.getUniqueId())) {
+        Optional<TrustEntry> entryOpt = tm.getEntry(realOwner, player.getUniqueId());
+
+        if (entryOpt.isEmpty()) {
             event.setCancelled(true);
-            player.sendMessage(Msg.error("You cannot harm a wolf you are not trusted with."));
+            player.sendMessage(Msg.error("You are not trusted with this wolf."));
+            return;
+        }
+
+        if (!entryOpt.get().getLevel().canRename()) {
+            event.setCancelled(true);
+            player.sendMessage(Msg.error("You need Full trust level to rename this wolf."));
         }
     }
 
-    /**
-     * /dw teleport — handled via a synthetic command but wolf teleport to player
-     * can also be triggered here if we store a "pending teleport" flag. For now,
-     * this listener stub is left for future teleport-on-command integration.
-     */
+    // -------------------------------------------------------------------------
+    // Damage guard
+    // -------------------------------------------------------------------------
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Wolf wolf)) return;
+        if (!(event.getDamager() instanceof Player player)) return;
+
+        UUID realOwner = realOwnerOf(wolf);
+        if (realOwner == null) return;
+        if (realOwner.equals(player.getUniqueId())) return;
+
+        TrustManager tm = plugin.getTrustManager();
+        if (!tm.isTrusted(realOwner, player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendMessage(Msg.error("You are not trusted with this wolf — it won't take kindly to that."));
+            wolf.setTarget(player);
+        } else {
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (wolf.getTarget() instanceof Player target && target.equals(player)) {
+                    wolf.setTarget(null);
+                }
+            });
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Targeting guard — prevent wolves retaliating against trusted players
+    // -------------------------------------------------------------------------
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onWolfTarget(EntityTargetEvent event) {
+        if (!(event.getEntity() instanceof Wolf wolf)) return;
+        if (!(event.getTarget() instanceof Player player)) return;
+
+        UUID realOwner = realOwnerOf(wolf);
+        if (realOwner == null) return;
+        if (realOwner.equals(player.getUniqueId())) return;
+
+        TrustManager tm = plugin.getTrustManager();
+        if (tm.isTrusted(realOwner, player.getUniqueId())) {
+            event.setCancelled(true);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Util
+    // -------------------------------------------------------------------------
+
+    private boolean isWolfFood(Material material) {
+        return switch (material) {
+            case BEEF, COOKED_BEEF,
+                 CHICKEN, COOKED_CHICKEN,
+                 PORKCHOP, COOKED_PORKCHOP,
+                 MUTTON, COOKED_MUTTON,
+                 RABBIT, COOKED_RABBIT,
+                 ROTTEN_FLESH -> true;
+            default -> false;
+        };
+    }
 }

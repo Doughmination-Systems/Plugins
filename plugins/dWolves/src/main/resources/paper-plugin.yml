@@ -3,13 +3,7 @@ version: 1.0.0
 main: win.doughmination.dwolves.DWolvesPlugin
 api-version: '1.21'
 description: Wolf trust system — let trusted players manage your wolves.
-authors: [ CloveTwilight ]
-
-commands:
-  dwolves:
-    description: dWolves root command
-    aliases: [ dw ]
-    usage: /dwolves <subcommand>
+authors: Doughmination
 
 permissions:
   dwolves.trust:
