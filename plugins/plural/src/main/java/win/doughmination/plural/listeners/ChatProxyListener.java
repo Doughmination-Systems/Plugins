@@ -12,13 +12,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import win.doughmination.plural.PluralConfig;
 import win.doughmination.plural.PluralMain;
 
 import java.util.UUID;
 
 public class ChatProxyListener implements Listener {
-
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
 
     // Listen at MONITOR so we run AFTER LuckPerms (which runs at HIGHEST)
     // We then override the renderer if the player has an active front
@@ -32,13 +31,11 @@ public class ChatProxyListener implements Listener {
 
         String front = buildFrontString(data);
         String systemName = data.systemName != null ? data.systemName : "";
-        boolean useLuckPerms = PluralMain.getInstance().getConfig()
-                .getBoolean("luckperms_prefix", true);
 
         Component lpPrefix = Component.empty();
         Component lpSuffix = Component.empty();
 
-        if (useLuckPerms) {
+        if (PluralConfig.LUCKPERMS_PREFIX) {
             try {
                 RegisteredServiceProvider<LuckPerms> provider =
                         PluralMain.getInstance().getServer()
@@ -48,7 +45,6 @@ public class ChatProxyListener implements Listener {
                     User lpUser = lp.getUserManager().getUser(uuid);
                     if (lpUser != null) {
                         CachedMetaData meta = lpUser.getCachedData().getMetaData();
-                        // Convert legacy "&" codes to Components
                         if (meta.getPrefix() != null) {
                             lpPrefix = LegacyComponentSerializer.legacyAmpersand().deserialize(meta.getPrefix());
                         }
@@ -62,7 +58,6 @@ public class ChatProxyListener implements Listener {
             }
         }
 
-        // Build your custom front + systemName
         Component frontComp = Component.text(front).color(NamedTextColor.WHITE);
         Component systemComp = Component.text(systemName).color(NamedTextColor.AQUA);
 
@@ -78,7 +73,6 @@ public class ChatProxyListener implements Listener {
                 .append(lpSuffix)
                 .append(Component.text(" ").color(NamedTextColor.WHITE));
 
-        // Attach the message component
         event.renderer((source, sourceDisplayName, message, viewer) ->
                 format.append(message.colorIfAbsent(NamedTextColor.WHITE))
         );

@@ -2,6 +2,7 @@ description = "Plugin for plural systems - cloud-backed via Plural Cloud"
 
 repositories {
     maven { url 'https://repo.lucko.me/' }
+    maven { url 'https://repo.papermc.io/repository/maven-public/' }
 }
 
 dependencies {

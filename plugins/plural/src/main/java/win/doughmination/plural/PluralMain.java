@@ -1,12 +1,9 @@
 package win.doughmination.plural;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import win.doughmination.plural.commands.PluralCommand;
-import win.doughmination.plural.commands.PluralCommandTabCompleter;
+import win.doughmination.plural.commands.PluralBrigadierCommand;
 import win.doughmination.plural.listeners.ChatProxyListener;
 import win.doughmination.plural.listeners.PlayerConnectionListener;
-import win.doughmination.plural.commands.*;
-import win.doughmination.plural.listeners.*;
 import win.doughmination.plural.api.*;
 
 import java.util.*;
@@ -23,28 +20,26 @@ public class PluralMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
         instance = this;
 
-        String apiUrl = getConfig().getString("api_url", "");
+        String apiUrl = PluralConfig.API_URL;
 
         if (apiUrl.isEmpty()) {
-            getLogger().warning("[Plural] api_url not set in config.yml — cloud sync disabled.");
+            getLogger().warning("[Plural] API_URL not set — cloud sync disabled.");
             apiClient = null;
         } else {
             apiClient = new CloudApiClient(apiUrl);
             getLogger().info("[Plural] Cloud API connected: " + apiUrl);
         }
 
-        getCommand("plural").setExecutor(new PluralCommand());
-        getCommand("plural").setTabCompleter(new PluralCommandTabCompleter());
+        // Register Brigadier command (replaces legacy CommandExecutor + TabCompleter)
+        PluralBrigadierCommand.register(this);
 
         connectionListener = new PlayerConnectionListener();
         getServer().getPluginManager().registerEvents(new ChatProxyListener(), this);
         getServer().getPluginManager().registerEvents(connectionListener, this);
 
-        String version = getConfig().getString("version", "unknown");
-        ModrinthApi.check(this, "C6SDmIS1", "plural", version);
+        ModrinthApi.check(this, "C6SDmIS1", "plural", getPluginMeta().getVersion());
 
         getLogger().info("[Plural] " + MOD_NAME + " loaded!");
     }
@@ -98,11 +93,7 @@ public class PluralMain extends JavaPlugin {
                 if (i > 0) sb.append("§7 & ");
                 String name = activeFrontNames.get(i);
                 MemberInfo info = getMember(name);
-                if (info != null && info.color != null && !info.color.isEmpty()) {
-                    sb.append("§f"); // fallback white; Adventure/MiniMessage handles true color
-                } else {
-                    sb.append("§f");
-                }
+                sb.append("§f");
                 sb.append(info != null && info.displayName != null ? info.displayName : name);
             }
             sb.append("§7 (§b").append(systemName).append("§7)>§r ");

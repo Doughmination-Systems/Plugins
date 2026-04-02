@@ -3,17 +3,23 @@
 
 name: Plural
 main: win.doughmination.plural.PluralMain
-version: 6.0.0
-api-version: 1.21.11
+version: 6.1.0
+api-version: 1.21
 author: Doughmination
 website: https://modding.doughmination.win
 description: "Cloud-backed plural system proxy for Plural Cloud."
-softdepend: [LuckPerms]
+
+dependencies:
+  server:
+    LuckPerms:
+      load: BEFORE
+      required: false
+      join-classpath: true
 
 commands:
   plural:
     description: "Plural Cloud commands"
-    usage: "/plural <system|help>"
+    usage: "/plural <system|sync|help>"
     permission: plural.use
     aliases: [pl]
 
