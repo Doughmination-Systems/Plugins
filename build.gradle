@@ -32,7 +32,7 @@ subprojects {
     dependencies {
         compileOnly 'io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT'
         implementation 'org.bstats:bstats-bukkit:3.2.1'
-        implementation 'com.google.code.gson:gson:2.13.2'
+        implementation 'com.google.code.gson:gson:2.14.0'
     }
 
     compileJava {
